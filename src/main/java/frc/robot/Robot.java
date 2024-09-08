@@ -26,11 +26,11 @@ import frc.robot.constants.ShooterConstants;
  * project.
  */
 public class Robot extends TimedRobot {
-    private Command m_autonomousCommand;
+    private Command autonomousCommand;
 
-    private RobotContainer m_robotContainer;
+    private RobotContainer robotContainer;
 
-    private PowerDistribution m_PD = new PowerDistribution(Constants.PDH_ID, ModuleType.kRev);
+    private PowerDistribution PD = new PowerDistribution(Constants.PDH_ID, ModuleType.kRev);
 
     /**
      * This function is run when the robot is first started up and should be
@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer. This will perform all our button
         // bindings, and put our autonomous chooser on the dashboard.
-        m_robotContainer = new RobotContainer();
+        robotContainer = new RobotContainer();
 
         // Put initial values of numbers that are continuously updated from
         // SmartDashboard.
@@ -78,15 +78,15 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("shootTopKS", ShooterConstants.SHOOTER_TOP_KS);
         SmartDashboard.putNumber("shootTopKV", ShooterConstants.SHOOTER_TOP_KV);
 
-        SmartDashboard.putNumber("shootBottomKP", ShooterConstants.SHOOTER_BOTTOM_KP);
-        SmartDashboard.putNumber("shootBottomKI", ShooterConstants.SHOOTER_BOTTOM_KI);
-        SmartDashboard.putNumber("shootBottomKD", ShooterConstants.SHOOTER_BOTTOM_KD);
+        SmartDashboard.putNumber("shootBottomKP", ShooterConstants.SHOOTER_BOTTOKP);
+        SmartDashboard.putNumber("shootBottomKI", ShooterConstants.SHOOTER_BOTTOKI);
+        SmartDashboard.putNumber("shootBottomKD", ShooterConstants.SHOOTER_BOTTOKD);
 
-        SmartDashboard.putNumber("shootBottomKS", ShooterConstants.SHOOTER_BOTTOM_KS);
-        SmartDashboard.putNumber("shootBottomKV", ShooterConstants.SHOOTER_BOTTOM_KV);
+        SmartDashboard.putNumber("shootBottomKS", ShooterConstants.SHOOTER_BOTTOKS);
+        SmartDashboard.putNumber("shootBottomKV", ShooterConstants.SHOOTER_BOTTOKV);
 
         SmartDashboard.putNumber("shootTopRPM", ShooterConstants.SHOOTER_TOP_DEFAULT_RPM);
-        SmartDashboard.putNumber("shootBottomRPM", ShooterConstants.SHOOTER_BOTTOM_DEFAULT_RPM);
+        SmartDashboard.putNumber("shootBottomRPM", ShooterConstants.SHOOTER_BOTTODEFAULT_RPM);
         SmartDashboard.putNumber("shootTopOutput", 0);
         SmartDashboard.putNumber("shootBottomOutput", 0);
 
@@ -119,9 +119,9 @@ public class Robot extends TimedRobot {
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
 
-        SmartDashboard.putNumber("PD 6", m_PD.getCurrent(6));
-        SmartDashboard.putNumber("PD total", m_PD.getTotalCurrent());
-        SmartDashboard.putNumber("PD total voltage", m_PD.getVoltage());
+        SmartDashboard.putNumber("PD 6", PD.getCurrent(6));
+        SmartDashboard.putNumber("PD total", PD.getTotalCurrent());
+        SmartDashboard.putNumber("PD total voltage", PD.getVoltage());
     }
 
     /**
@@ -141,10 +141,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        autonomousCommand = robotContainer.getAutonomousCommand();
 
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.schedule();
+        if (autonomousCommand != null) {
+            autonomousCommand.schedule();
         }
     }
 
@@ -159,10 +159,10 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.cancel();
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
         }
-        m_robotContainer.resetSetpoints();
+        robotContainer.resetSetpoints();
     }
 
     /** This function is called periodically during operator control. */

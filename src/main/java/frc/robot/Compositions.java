@@ -59,7 +59,7 @@ public class Compositions {
                 angle.angleToStageBack(),
                 feedAndShootAlsoIntake(
                         feeder, intake, top, bottom, ShooterConstants.SHOOTER_TOP_STAGE_BACK_RPM,
-                        ShooterConstants.SHOOTER_BOTTOM_STAGE_BACK_RPM));
+                        ShooterConstants.SHOOTER_BOTTOSTAGE_BACK_RPM));
     }
 
     public static Command shootNAngleFromStageFront(AngleSubsystem angle, ShooterTopSubsystem top,
@@ -68,7 +68,7 @@ public class Compositions {
                 angle.angleToStageFront(),
                 feedAndShootAlsoIntake(
                         feeder, intake, top, bottom, ShooterConstants.SHOOTER_TOP_STAGE_FRONT_RPM,
-                        ShooterConstants.SHOOTER_BOTTOM_STAGE_FRONT_RPM));
+                        ShooterConstants.SHOOTER_BOTTOSTAGE_FRONT_RPM));
     }
 
     public static Command feedNIn(FeederSubsystem feeder, IntakeSubsystem intake) {

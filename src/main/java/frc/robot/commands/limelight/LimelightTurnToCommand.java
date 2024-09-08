@@ -15,58 +15,58 @@ import frc.robot.util.NTDoubleSection;
 import frc.robot.util.TunableNumber;
 
 public class LimelightTurnToCommand extends Command {
-    DrivetrainSubsystem m_drivetrain;
-    LimelightSubsystem m_limelight;
-    PIDController m_pid;
-    double m_pigeonStartingNumber;
+    DrivetrainSubsystem drivetrain;
+    LimelightSubsystem limelight;
+    PIDController pid;
+    double pigeonStartingNumber;
 
-    private final NTDoubleSection m_doubles = new NTDoubleSection("limelight", "drivetrain omega", "measurement",
+    private final NTDoubleSection doubles = new NTDoubleSection("limelight", "drivetrain omega", "measurement",
             "setpoint");
-    private final NTBooleanSection m_booleans = new NTBooleanSection("limelight", "aiming");
+    private final NTBooleanSection booleans = new NTBooleanSection("limelight", "aiming");
 
-    private final TunableNumber m_kP = new TunableNumber("limelight", "kP", LimelightConstants.TURN_P);
-    private final TunableNumber m_kI = new TunableNumber("limelight", "kI", LimelightConstants.TURN_I);
-    private final TunableNumber m_kD = new TunableNumber("limelight", "kD", LimelightConstants.TURN_D);
+    private final TunableNumber kP = new TunableNumber("limelight", "kP", LimelightConstants.TURN_P);
+    private final TunableNumber kI = new TunableNumber("limelight", "kI", LimelightConstants.TURN_I);
+    private final TunableNumber kD = new TunableNumber("limelight", "kD", LimelightConstants.TURN_D);
 
     public LimelightTurnToCommand(final DrivetrainSubsystem drivetrain, final LimelightSubsystem limelight,
             final double offset) {
-        m_drivetrain = drivetrain;
-        m_limelight = limelight;
+        this.drivetrain = drivetrain;
+        this.limelight = limelight;
 
-        addRequirements(m_drivetrain);
+        addRequirements(drivetrain);
 
-        m_pid = new PIDController(m_kP.get(), m_kI.get(), m_kD.get());
+        pid = new PIDController(kP.get(), kI.get(), kD.get());
 
-        m_pid.setTolerance(Constants.TOLERANCE);
-        m_pid.setSetpoint(LimelightAimCommand.positiveToPosNeg(m_drivetrain.getRotation3d().getZ() + offset));
-        m_pid.enableContinuousInput(-Math.PI, Math.PI);
+        pid.setTolerance(Constants.TOLERANCE);
+        pid.setSetpoint(LimelightAimCommand.positiveToPosNeg(drivetrain.getRotation3d().getZ() + offset));
+        pid.enableContinuousInput(-Math.PI, Math.PI);
 
-        m_pigeonStartingNumber = m_drivetrain.getRotation3d().getZ();
+        pigeonStartingNumber = drivetrain.getRotation3d().getZ();
 
-        m_doubles.set("setpiont", m_pid.getSetpoint());
+        doubles.set("setpiont", pid.getSetpoint());
     }
 
     @Override
     public void execute() {
         double measurement = getMeasurement();
-        m_doubles.set("measurement", measurement);
-        double omega = m_pid.calculate(measurement);
-        m_doubles.set("drivetrain omega", omega);
-        m_drivetrain.drive(omega);
+        doubles.set("measurement", measurement);
+        double omega = pid.calculate(measurement);
+        doubles.set("drivetrain omega", omega);
+        drivetrain.drive(omega);
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_drivetrain.drive(0);
-        m_booleans.set("aiming", false);
+        drivetrain.drive(0);
+        booleans.set("aiming", false);
     }
 
     private double getMeasurement() {
-        return m_drivetrain.getRotation3d().getZ();
+        return drivetrain.getRotation3d().getZ();
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(getMeasurement() - m_pid.getSetpoint()) < Constants.TOLERANCE;
+        return Math.abs(getMeasurement() - pid.getSetpoint()) < Constants.TOLERANCE;
     }
 }

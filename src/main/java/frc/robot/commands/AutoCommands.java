@@ -47,7 +47,7 @@ public class AutoCommands {
                 Commands.runOnce(() -> top.setSetpoint(
                         SmartDashboard.getNumber("shootTopRPM", ShooterConstants.SHOOTER_TOP_DEFAULT_RPM))),
                 Commands.runOnce(() -> bottom.setSetpoint(
-                        SmartDashboard.getNumber("shootBottomRPM", ShooterConstants.SHOOTER_BOTTOM_DEFAULT_RPM))));
+                        SmartDashboard.getNumber("shootBottomRPM", ShooterConstants.SHOOTER_BOTTODEFAULT_RPM))));
     }
 
     public static Command stopShooter(ShooterTopSubsystem top, ShooterBottomSubsystem bottom) {

@@ -13,18 +13,18 @@ import frc.robot.constants.DrivetrainConstants.SlewRateLimiterMode;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class DriveCommand extends Command {
-    private final DrivetrainSubsystem m_drivetrain;
-    private final Supplier<Double> m_stickX;
-    private final Supplier<Double> m_stickY;
-    private final Supplier<Double> m_rotate;
-    private final Supplier<Double> m_multiplier;
-    private Watchdog m_watchdog = new Watchdog(0.02, () -> {
+    private final DrivetrainSubsystem drivetrain;
+    private final Supplier<Double> stickX;
+    private final Supplier<Double> stickY;
+    private final Supplier<Double> rotate;
+    private final Supplier<Double> multiplierSupplier;
+    private Watchdog watchdog = new Watchdog(0.02, () -> {
     });
-    private SlewRateLimiter m_thetaLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_THETA_MAGNITUDE);
-    private SlewRateLimiter m_magnitudeLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_THETA_MAGNITUDE);
-    private SlewRateLimiter m_xLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_AXES);
-    private SlewRateLimiter m_yLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_AXES);
-    private SlewRateLimiter m_omegaLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_OMEGA);
+    private SlewRateLimiter thetaLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_THETA_MAGNITUDE);
+    private SlewRateLimiter magnitudeLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_THETA_MAGNITUDE);
+    private SlewRateLimiter xLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_AXES);
+    private SlewRateLimiter yLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_AXES);
+    private SlewRateLimiter omegaLimiter = new SlewRateLimiter(DrivetrainConstants.ACCEL_LIMIT_OMEGA);
 
     /**
      * Creates a new DriveCommand. This class takes the drivetrain to drive, the
@@ -36,36 +36,36 @@ public class DriveCommand extends Command {
      */
     public DriveCommand(DrivetrainSubsystem drivetrain, Supplier<Double> stickX, Supplier<Double> stickY,
             Supplier<Double> rotate, Supplier<Double> multiplier) {
-        m_drivetrain = drivetrain;
+        this.drivetrain = drivetrain;
 
-        m_stickX = stickX;
-        m_stickY = stickY;
-        m_rotate = rotate;
-        m_multiplier = multiplier;
+        this.stickX = stickX;
+        this.stickY = stickY;
+        this.rotate = rotate;
+        this.multiplierSupplier = multiplier;
 
-        addRequirements(m_drivetrain);
+        addRequirements(drivetrain);
     }
 
     public void execute() {
-        m_watchdog.reset();
+        watchdog.reset();
 
-        double multiplier = m_multiplier.get();
-        double speedX = m_stickY.get() * multiplier;
-        double speedY = m_stickX.get() * multiplier;
-        double speedOmega = m_omegaLimiter.calculate(m_rotate.get() * multiplier);
+        double multiplier = multiplierSupplier.get();
+        double speedX = stickY.get() * multiplier;
+        double speedY = stickX.get() * multiplier;
+        double speedOmega = omegaLimiter.calculate(rotate.get() * multiplier);
         if (DrivetrainConstants.SLEW_RATE_LIMITER_MODE == SlewRateLimiterMode.THETA_MAGNITUDE) {
             driveThetaMagnitudeSRL(speedX, speedY, speedOmega);
         } else if (DrivetrainConstants.SLEW_RATE_LIMITER_MODE == SlewRateLimiterMode.AXES) {
             driveAxesSRL(speedX, speedY, speedOmega);
         } else {
-            m_drivetrain.drive(speedX, speedY, speedOmega);
+            drivetrain.drive(speedX, speedY, speedOmega);
         }
 
-        m_watchdog.addEpoch("drivetrain_update");
-        m_watchdog.disable();
-        if (m_watchdog.isExpired()) {
+        watchdog.addEpoch("drivetrain_update");
+        watchdog.disable();
+        if (watchdog.isExpired()) {
             System.out.println("watchdog expired :( ");
-            m_watchdog.printEpochs();
+            watchdog.printEpochs();
         }
     }
 
@@ -75,12 +75,12 @@ public class DriveCommand extends Command {
      * of movement, which means that the steer motors can accelerate unbounded.
      */
     private void driveAxesSRL(double speedX, double speedY, double speedOmega) {
-        speedX = m_xLimiter.calculate(m_stickY.get());
-        speedY = m_yLimiter.calculate(m_stickX.get());
+        speedX = xLimiter.calculate(stickY.get());
+        speedY = yLimiter.calculate(stickX.get());
         SmartDashboard.putNumber("drive_speedX", speedX);
         SmartDashboard.putNumber("drive_speedY", speedY);
         SmartDashboard.putNumber("drive_speedOmega", speedOmega);
-        m_drivetrain.drive(speedX, speedY, speedOmega);
+        drivetrain.drive(speedX, speedY, speedOmega);
     }
 
     /**
@@ -103,11 +103,11 @@ public class DriveCommand extends Command {
      * unmodified.
      */
     private void driveThetaMagnitudeSRL(double speedX, double speedY, double speedOmega) {
-        double theta = m_thetaLimiter.calculate(new Rotation2d(speedX, speedY).getRadians());
-        double r = m_magnitudeLimiter.calculate(Math.sqrt(speedX * speedX + speedY * speedY));
+        double theta = thetaLimiter.calculate(new Rotation2d(speedX, speedY).getRadians());
+        double r = magnitudeLimiter.calculate(Math.sqrt(speedX * speedX + speedY * speedY));
         Translation2d thetaMagnitudeMovement = new Translation2d(r, theta);
         SmartDashboard.putNumber("drive_theta", theta);
         SmartDashboard.putNumber("drive_magnitude", r);
-        m_drivetrain.drive(thetaMagnitudeMovement, speedOmega);
+        drivetrain.drive(thetaMagnitudeMovement, speedOmega);
     }
 }

@@ -33,13 +33,13 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  */
 public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
-    private Notifier m_simNotifier = null;
-    private double m_lastSimTime;
+    private Notifier simNotifier = null;
+    private double lastSimTime;
 
-    private SwerveRequest.RobotCentric m_robotCentric = new SwerveRequest.RobotCentric();
-    private SwerveRequest.FieldCentric m_fieldCentric = new SwerveRequest.FieldCentric();
-    private SwerveRequest.SwerveDriveBrake m_brake = new SwerveRequest.SwerveDriveBrake();
-    private Supplier<Boolean> m_isFieldCentric;
+    private SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric();
+    private SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric();
+    private SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private Supplier<Boolean> isFieldCentric;
 
     public DrivetrainSubsystem(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             Supplier<Boolean> fieldCentric, SwerveModuleConstants... modules) {
@@ -48,7 +48,7 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
 
-        m_isFieldCentric = fieldCentric;
+        isFieldCentric = fieldCentric;
 
         setupAuto();
     }
@@ -60,21 +60,21 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
 
-        m_isFieldCentric = fieldCentric;
+        isFieldCentric = fieldCentric;
 
         setupAuto();
     }
 
     public void drive(double vx, double vy, double omega) {
-        if (m_isFieldCentric.get()) {
-            setControl(m_fieldCentric.withVelocityX(vx)
+        if (isFieldCentric.get()) {
+            setControl(fieldCentric.withVelocityX(vx)
                     .withVelocityY(vy)
                     .withRotationalRate(omega)
                     .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
             return;
         }
 
-        setControl(m_robotCentric.withVelocityX(vx)
+        setControl(robotCentric.withVelocityX(vx)
                 .withVelocityY(vy)
                 .withRotationalRate(omega)
                 .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
@@ -93,8 +93,8 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
     }
 
     public void driveClosedLoop(double vx, double vy, double omega) {
-        if (m_isFieldCentric.get()) {
-            setControl(m_fieldCentric.withVelocityX(vx)
+        if (isFieldCentric.get()) {
+            setControl(fieldCentric.withVelocityX(vx)
                     .withVelocityY(vy)
                     .withRotationalRate(omega)
                     .withDriveRequestType(DriveRequestType.Velocity)
@@ -102,7 +102,7 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
             return;
         }
 
-        setControl(m_robotCentric.withVelocityX(vx)
+        setControl(robotCentric.withVelocityX(vx)
                 .withVelocityY(vy)
                 .withRotationalRate(omega)
                 .withDriveRequestType(DriveRequestType.Velocity)
@@ -110,7 +110,7 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
     }
 
     public void brake() {
-        setControl(m_brake);
+        setControl(brake);
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -122,18 +122,18 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
     }
 
     private void startSimThread() {
-        m_lastSimTime = Utils.getCurrentTimeSeconds();
+        lastSimTime = Utils.getCurrentTimeSeconds();
 
         // Run simulation at a faster rate so PID gains behave more reasonably
-        m_simNotifier = new Notifier(() -> {
+        simNotifier = new Notifier(() -> {
             final double currentTime = Utils.getCurrentTimeSeconds();
-            double deltaTime = currentTime - m_lastSimTime;
-            m_lastSimTime = currentTime;
+            double deltaTime = currentTime - lastSimTime;
+            lastSimTime = currentTime;
 
             // use the measured time delta, get battery voltage from WPILib
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
-        m_simNotifier.startPeriodic(kSimLoopPeriod);
+        simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
     private Pose2d getEstimatedPosition() {
@@ -171,7 +171,7 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
     private void autoDriveRobotRelative(ChassisSpeeds robotChassisSpeeds) {
         var discrete = ChassisSpeeds.discretize(robotChassisSpeeds, 1.0 / 20.0);
 
-        setControl(m_robotCentric
+        setControl(robotCentric
                 .withVelocityX(discrete.vxMetersPerSecond)
                 .withVelocityY(discrete.vyMetersPerSecond)
                 .withDriveRequestType(DriveRequestType.Velocity)

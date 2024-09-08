@@ -13,37 +13,38 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.FeederConstants;
 
 public class FeederSubsystem extends SubsystemBase {
-    private final CANSparkMax m_sparkMax_pull = new CANSparkMax(Constants.FEEDER_MOTOR_ID, MotorType.kBrushless);
-    private final DigitalInput m_switch = new DigitalInput(Constants.FEEDER_BEAM_PIN);
+    private final CANSparkMax sparkMax_pull = new CANSparkMax(Constants.FEEDER_MOTOR_ID, MotorType.kBrushless);
+
+    private final DigitalInput beamBreak = new DigitalInput(Constants.FEEDER_BEAPIN);
 
     public FeederSubsystem() {
-        m_sparkMax_pull.setInverted(true);
+        sparkMax_pull.setInverted(true);
     }
 
     public void pull() {
         double pullSpeed = FeederConstants.FEEDER_PULL_VOLTS;
 
-        m_sparkMax_pull.setVoltage(pullSpeed);
+        sparkMax_pull.setVoltage(pullSpeed);
     }
 
     public void push() {
         double pushSpeed = FeederConstants.FEEDER_PUSH_VOLTS;
 
-        m_sparkMax_pull.setVoltage(-pushSpeed);
+        sparkMax_pull.setVoltage(-pushSpeed);
     }
 
     public void stop() {
-        m_sparkMax_pull.setVoltage(0);
+        sparkMax_pull.setVoltage(0);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("feederSwitchStatus", getSwitchStatus());
-        SmartDashboard.putNumber("feederVoltage", m_sparkMax_pull.getBusVoltage());
+        SmartDashboard.putBoolean("feederBeamBreakStatus", getBeamBreakStatus());
+        SmartDashboard.putNumber("feederVoltage", sparkMax_pull.getBusVoltage());
     }
 
-    public boolean getSwitchStatus() {
-        return m_switch.get();
+    public boolean getBeamBreakStatus() {
+        return beamBreak.get();
     }
 
     public Command getPullStop() {
@@ -55,11 +56,11 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
     public Command getPrimeNote() {
-        return FactoryCommands.startEndUntil(() -> pull(), () -> stop(), () -> getSwitchStatus(), this);
+        return FactoryCommands.startEndUntil(() -> pull(), () -> stop(), () -> getBeamBreakStatus(), this);
     }
 
     public Command getUnprimeNote() {
-        return FactoryCommands.startEndUntil(() -> push(), () -> stop(), () -> !getSwitchStatus(), this);
+        return FactoryCommands.startEndUntil(() -> push(), () -> stop(), () -> !getBeamBreakStatus(), this);
     }
 
     public Command getStop() {

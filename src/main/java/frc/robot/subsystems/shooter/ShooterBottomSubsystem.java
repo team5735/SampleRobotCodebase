@@ -12,24 +12,24 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.ShooterConstants;
 
 public class ShooterBottomSubsystem extends SubsystemBase {
-    private PIDController m_pid_bottom;
-    private SimpleMotorFeedforward m_feedForward_bottom;
-    private double m_setpoint;
+    private PIDController pid_bottom;
+    private SimpleMotorFeedforward feedForward_bottom;
+    private double setpoint;
 
-    private final TalonFX m_talon_bottom = new TalonFX(Constants.SHOOTER_MOTOR_BOTTOM_ID);
+    private final TalonFX talon_bottom = new TalonFX(Constants.SHOOTER_MOTOR_BOTTOID);
 
     public ShooterBottomSubsystem() {
-        m_talon_bottom.setNeutralMode(NeutralModeValue.Coast);
+        talon_bottom.setNeutralMode(NeutralModeValue.Coast);
 
-        m_pid_bottom = new PIDController(0, 0, 0);
-        m_feedForward_bottom = new SimpleMotorFeedforward(0, 0);
+        pid_bottom = new PIDController(0, 0, 0);
+        feedForward_bottom = new SimpleMotorFeedforward(0, 0);
 
         updateProportions();
     }
 
     /**
      * Gets values from {@link SmartDashboard} for the {@link PIDController} and the
-     * {@link SimpleMotorFeedforward}. Then, m_pid_bottom and m_feedForward_bottom
+     * {@link SimpleMotorFeedforward}. Then, pid_bottom and feedForward_bottom
      * are reconstructed based on the values acquired from {@link SmartDashboard.}
      *
      * <p>
@@ -43,15 +43,15 @@ public class ShooterBottomSubsystem extends SubsystemBase {
      * </ul>
      */
     public void updateProportions() {
-        double bkp = ShooterConstants.SHOOTER_BOTTOM_KP;
-        double bki = ShooterConstants.SHOOTER_BOTTOM_KI;
-        double bkd = ShooterConstants.SHOOTER_BOTTOM_KD;
+        double bkp = ShooterConstants.SHOOTER_BOTTOKP;
+        double bki = ShooterConstants.SHOOTER_BOTTOKI;
+        double bkd = ShooterConstants.SHOOTER_BOTTOKD;
 
-        double bks = ShooterConstants.SHOOTER_BOTTOM_KS;
-        double bkv = ShooterConstants.SHOOTER_BOTTOM_KV;
+        double bks = ShooterConstants.SHOOTER_BOTTOKS;
+        double bkv = ShooterConstants.SHOOTER_BOTTOKV;
 
-        m_pid_bottom.setPID(bkp, bki, bkd);
-        m_feedForward_bottom = new SimpleMotorFeedforward(bks, bkv);
+        pid_bottom.setPID(bkp, bki, bkd);
+        feedForward_bottom = new SimpleMotorFeedforward(bks, bkv);
     }
 
     @Override
@@ -59,29 +59,29 @@ public class ShooterBottomSubsystem extends SubsystemBase {
         updateProportions();
 
         SmartDashboard.putNumber("shootBottomOutput", Math.abs(getBottomMeasurement()));
-        SmartDashboard.putNumber("shootBottomPIDError", Math.abs(m_pid_bottom.getPositionError()));
-        SmartDashboard.putNumber("shootBottomSetpoint", m_setpoint);
-        SmartDashboard.putNumber("shootTopAmps", m_talon_bottom.getStatorCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("shootBottomPIDError", Math.abs(pid_bottom.getPositionError()));
+        SmartDashboard.putNumber("shootBottomSetpoint", setpoint);
+        SmartDashboard.putNumber("shootTopAmps", talon_bottom.getStatorCurrent().getValueAsDouble());
 
     }
 
     public void useOutput(double pidOutput) {
-        if (m_pid_bottom.getSetpoint() != 0) {
-            double feedOutput = m_feedForward_bottom.calculate(m_pid_bottom.getSetpoint());
-            m_talon_bottom.setVoltage(
+        if (pid_bottom.getSetpoint() != 0) {
+            double feedOutput = feedForward_bottom.calculate(pid_bottom.getSetpoint());
+            talon_bottom.setVoltage(
                     pidOutput + feedOutput);
         } else {
-            m_talon_bottom.setVoltage(0);
+            talon_bottom.setVoltage(0);
         }
     }
 
     public double getBottomMeasurement() {
-        return m_talon_bottom.getVelocity().getValueAsDouble() * 60;
+        return talon_bottom.getVelocity().getValueAsDouble() * 60;
     }
 
     public void setSetpoint(double setpoint) {
         if (setpoint >= 0)
-            m_setpoint = setpoint;
+            setpoint = setpoint;
     }
 
     public void stop() {
@@ -89,11 +89,11 @@ public class ShooterBottomSubsystem extends SubsystemBase {
     }
 
     public boolean isSpunUp() {
-        return Math.abs(m_pid_bottom.getPositionError()) < 100;
+        return Math.abs(pid_bottom.getPositionError()) < 100;
     }
 
     public PIDCommand shootPIDCommand() {
-        return new PIDCommand(m_pid_bottom, () -> getBottomMeasurement(), () -> m_setpoint,
+        return new PIDCommand(pid_bottom, () -> getBottomMeasurement(), () -> setpoint,
                 a -> useOutput(a), this);
     }
 }

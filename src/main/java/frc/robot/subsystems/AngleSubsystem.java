@@ -25,18 +25,18 @@ import frc.robot.constants.Constants;
  * @author Jacoby
  */
 public class AngleSubsystem extends SubsystemBase {
-    private PIDController m_pid;
-    private ArmFeedforward m_feedForward;
+    private PIDController pid;
+    private ArmFeedforward feedForward;
     private boolean enabled = true;
     private double startPosition = 0;
-    private double m_setpoint, m_activeOutput;
+    private double setpoint, activeOutput;
 
-    private final CANSparkMax m_sparkMax_right = new CANSparkMax(
+    private final CANSparkMax sparkMax_right = new CANSparkMax(
             Constants.ANGLE_MOTOR_RIGHT_ID, MotorType.kBrushless);
-    private final CANSparkMax m_sparkMax_left = new CANSparkMax(
+    private final CANSparkMax sparkMax_left = new CANSparkMax(
             Constants.ANGLE_MOTOR_LEFT_ID, MotorType.kBrushless);
 
-    private final DutyCycleEncoder m_encoder = new DutyCycleEncoder(Constants.ANGLE_ENCODER_PIN);
+    private final DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.ANGLE_ENCODER_PIN);
 
     /**
      * Creates a new AngleSubsystem. Inverts both motors, and sets the left motor to
@@ -45,19 +45,19 @@ public class AngleSubsystem extends SubsystemBase {
      * setpoint is set to the resting position and the encoder is initialized.
      */
     public AngleSubsystem() {
-        m_sparkMax_left.setInverted(true);
-        m_sparkMax_right.setInverted(true);
+        sparkMax_left.setInverted(true);
+        sparkMax_right.setInverted(true);
 
-        m_sparkMax_left.follow(m_sparkMax_right, true);
+        sparkMax_left.follow(sparkMax_right, true);
 
-        m_pid = new PIDController(0, 0, 0);
-        m_feedForward = new ArmFeedforward(0, 0, 0);
+        pid = new PIDController(0, 0, 0);
+        feedForward = new ArmFeedforward(0, 0, 0);
 
-        m_pid.setIZone(1);
+        pid.setIZone(1);
 
         updateProportions();
 
-        m_encoder.setDistancePerRotation(1);
+        encoder.setDistancePerRotation(1);
 
         setSetpoint(AngleConstants.ANGLE_START_POS_DEG);
     }
@@ -71,9 +71,9 @@ public class AngleSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("anglePos", getMeasurement());
-        SmartDashboard.putNumber("angleCurrentSetpoint", m_setpoint);
-        SmartDashboard.putNumber("anglePIDError", Math.abs(m_pid.getPositionError()));
-        SmartDashboard.putNumber("anglePIDOutput", m_activeOutput);
+        SmartDashboard.putNumber("angleCurrentSetpoint", setpoint);
+        SmartDashboard.putNumber("anglePIDError", Math.abs(pid.getPositionError()));
+        SmartDashboard.putNumber("anglePIDOutput", activeOutput);
     }
 
     /**
@@ -90,10 +90,10 @@ public class AngleSubsystem extends SubsystemBase {
      */
     public double getMeasurement() {
         if (startPosition == 0) {
-            startPosition = m_encoder.getDistance();
+            startPosition = encoder.getDistance();
         }
         double currentAngleDegrees = AngleConstants.convertRotationsToDegrees(
-                m_encoder.getDistance() - startPosition + AngleConstants.ANGLE_START_POS_ROT);
+                encoder.getDistance() - startPosition + AngleConstants.ANGLE_START_POS_ROT);
 
         return 0.1 * Math.round(currentAngleDegrees * 10);
     }
@@ -116,19 +116,19 @@ public class AngleSubsystem extends SubsystemBase {
     public void useOutput(double pidOutput) {
         if (enabled) {
             double feedOutput = (!isAtBase())
-                    ? m_feedForward.calculate(Math.toRadians(getMeasurement()), pidOutput)
+                    ? feedForward.calculate(Math.toRadians(getMeasurement()), pidOutput)
                     : 0;
             double volts = pidOutput + feedOutput;
-            m_sparkMax_right.setVoltage(volts);
+            sparkMax_right.setVoltage(volts);
             SmartDashboard.putNumber("angleHypotheticalOutput", volts);
         } else {
-            m_sparkMax_right.setVoltage(0);
+            sparkMax_right.setVoltage(0);
         }
-        m_activeOutput = pidOutput;
+        activeOutput = pidOutput;
     }
 
     /**
-     * Recreates m_pid and m_feedForward based on the PID and SGV constants in
+     * Recreates pid and feedForward based on the PID and SGV constants in
      * {@link AngleConstants}.
      */
     public void updateProportions() {
@@ -140,15 +140,15 @@ public class AngleSubsystem extends SubsystemBase {
         double kg = AngleConstants.ANGLE_KG;
         double kv = AngleConstants.ANGLE_KV;
 
-        m_feedForward = new ArmFeedforward(ks, kg, kv);
-        m_pid.setPID(kp, ki, kd);
+        feedForward = new ArmFeedforward(ks, kg, kv);
+        pid.setPID(kp, ki, kd);
     }
 
     /**
      * Resets the PIDController that this subsystem uses.
      */
     public void pidReset() {
-        m_pid.reset();
+        pid.reset();
     }
 
     /**
@@ -166,7 +166,7 @@ public class AngleSubsystem extends SubsystemBase {
      */
     public void setSetpoint(double angle) {
         if (angle > AngleConstants.ANGLE_LOWEST_DEG && angle < AngleConstants.ANGLE_HIGHEST_DEG)
-            m_setpoint = angle;
+            setpoint = angle;
     }
 
     /**
@@ -175,7 +175,7 @@ public class AngleSubsystem extends SubsystemBase {
      * feed forward to the motors as voltage.
      */
     public void releaseBrakes() {
-        m_sparkMax_right.setIdleMode(IdleMode.kCoast);
+        sparkMax_right.setIdleMode(IdleMode.kCoast);
         enabled = false;
     }
 
@@ -185,7 +185,7 @@ public class AngleSubsystem extends SubsystemBase {
      * the motors as voltage.
      */
     public void engageBrakes() {
-        m_sparkMax_right.setIdleMode(IdleMode.kBrake);
+        sparkMax_right.setIdleMode(IdleMode.kBrake);
         enabled = true;
     }
 
@@ -198,7 +198,7 @@ public class AngleSubsystem extends SubsystemBase {
      * @return A PIDCommand that runs *this* subsystem, requiring *s*.
      */
     public PIDCommand anglePIDCommand(AngleSubsystem s) {
-        return new PIDCommand(m_pid, () -> getMeasurement(), () -> m_setpoint, a -> useOutput(a), s);
+        return new PIDCommand(pid, () -> getMeasurement(), () -> setpoint, a -> useOutput(a), s);
     }
 
     /**
@@ -207,7 +207,7 @@ public class AngleSubsystem extends SubsystemBase {
      * @return Whether the absolute position error is less than 5
      */
     public boolean isAtSetpoint() {
-        return Math.abs(m_pid.getPositionError()) < 5;
+        return Math.abs(pid.getPositionError()) < 5;
     }
 
     /**
@@ -271,7 +271,7 @@ public class AngleSubsystem extends SubsystemBase {
      * the function was called.
      */
     public Command angleIncrease() {
-        return getSetAngle(m_setpoint - 10).repeatedly();
+        return getSetAngle(setpoint - 10).repeatedly();
     }
 
     /**
@@ -279,7 +279,7 @@ public class AngleSubsystem extends SubsystemBase {
      * when the function was called.
      */
     public Command angleDecrease() {
-        return getSetAngle(m_setpoint + 10).repeatedly();
+        return getSetAngle(setpoint + 10).repeatedly();
     }
 
     /**
@@ -308,7 +308,7 @@ public class AngleSubsystem extends SubsystemBase {
             double setpoint = SmartDashboard.getNumber("testShootAngle",
                     AngleConstants.ANGLE_START_POS_DEG);
             setSetpoint(setpoint);
-        }, () -> isAtPosition(m_setpoint));
+        }, () -> isAtPosition(setpoint));
     }
 
     /**

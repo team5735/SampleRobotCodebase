@@ -17,7 +17,7 @@ package frc.robot.constants;
 public final class Constants {
     public static class OperatorConstants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
-        public static final int SUBSYSTEM_CONTROLLER_PORT = 1;
+        public static final int SUBSYSTECONTROLLER_PORT = 1;
     }
 
     public static final int CANDLE_ID = 33;
@@ -30,12 +30,12 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_LEFT_ID = 61; // SPARKMAX
 
     public static final int FEEDER_MOTOR_ID = 30; // SPARKMAX
-    public static final int FEEDER_BEAM_PIN = 0; // LIGHT-BASED SENSOR (DIO)
+    public static final int FEEDER_BEAPIN = 0; // LIGHT-BASED SENSOR (DIO)
 
     public static final int INTAKE_MOTOR_ID = 60; // SPARKMAX
 
     public static final int SHOOTER_MOTOR_TOP_ID = 57; // TALON
-    public static final int SHOOTER_MOTOR_BOTTOM_ID = 58; // TALON
+    public static final int SHOOTER_MOTOR_BOTTOID = 58; // TALON
 
     public static final int PDH_ID = 59;
 

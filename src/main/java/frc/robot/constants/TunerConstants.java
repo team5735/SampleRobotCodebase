@@ -177,6 +177,6 @@ public class TunerConstants {
             kInvertRightSide);
 
     public static final DrivetrainSubsystem DriveTrain = new DrivetrainSubsystem(DrivetrainConstants,
-            RobotContainer.m_getFieldCentric, FrontLeft,
+            RobotContainer.getFieldCentric, FrontLeft,
             FrontRight, BackLeft, BackRight);
 }
