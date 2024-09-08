@@ -28,7 +28,6 @@ public class LimelightTurnToCommand extends Command {
     private final TunableNumber m_kI = new TunableNumber("limelight", "kI", LimelightConstants.TURN_I);
     private final TunableNumber m_kD = new TunableNumber("limelight", "kD", LimelightConstants.TURN_D);
 
-    /** Creates a new LimelightTurnToCommand. */
     public LimelightTurnToCommand(final DrivetrainSubsystem drivetrain, final LimelightSubsystem limelight,
             final double offset) {
         m_drivetrain = drivetrain;
@@ -47,12 +46,6 @@ public class LimelightTurnToCommand extends Command {
         m_doubles.set("setpiont", m_pid.getSetpoint());
     }
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-    }
-
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         double measurement = getMeasurement();
@@ -62,7 +55,6 @@ public class LimelightTurnToCommand extends Command {
         m_drivetrain.drive(omega);
     }
 
-    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         m_drivetrain.drive(0);
@@ -73,7 +65,6 @@ public class LimelightTurnToCommand extends Command {
         return m_drivetrain.getRotation3d().getZ();
     }
 
-    // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         return Math.abs(getMeasurement() - m_pid.getSetpoint()) < Constants.TOLERANCE;
