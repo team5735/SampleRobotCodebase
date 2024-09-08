@@ -219,7 +219,7 @@ public class RobotContainer {
         Command auto = m_autoChooser.getSelected();
         if (auto == null) {
             System.out.println("auto is null");
-            return new BrakeCommand(m_drivetrain);
+            return null;
         }
 
         // we need to get the starting pose from the Limelight
