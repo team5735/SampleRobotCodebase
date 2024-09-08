@@ -44,18 +44,18 @@ public class Robot extends TimedRobot {
 
         // Put initial values of numbers that are continuously updated from
         // SmartDashboard.
-        SmartDashboard.putNumber("angleKP", AngleConstants.ANGLE_KP);
-        SmartDashboard.putNumber("angleKI", AngleConstants.ANGLE_KI);
-        SmartDashboard.putNumber("angleKD", AngleConstants.ANGLE_KD);
+        SmartDashboard.putNumber("angleKP", AngleConstants.KP);
+        SmartDashboard.putNumber("angleKI", AngleConstants.KI);
+        SmartDashboard.putNumber("angleKD", AngleConstants.KD);
 
-        SmartDashboard.putNumber("angleKS", AngleConstants.ANGLE_KS);
-        SmartDashboard.putNumber("angleKG", AngleConstants.ANGLE_KG);
-        SmartDashboard.putNumber("angleKV", AngleConstants.ANGLE_KV);
+        SmartDashboard.putNumber("angleKS", AngleConstants.KS);
+        SmartDashboard.putNumber("angleKG", AngleConstants.KG);
+        SmartDashboard.putNumber("angleKV", AngleConstants.KV);
 
         SmartDashboard.putNumber("anglePos", 0);
 
-        SmartDashboard.putNumber("angleCurrentSetpoint", AngleConstants.ANGLE_START_POS_DEG);
-        SmartDashboard.putNumber("angleNewSetpoint", AngleConstants.ANGLE_START_POS_DEG);
+        SmartDashboard.putNumber("angleCurrentSetpoint", AngleConstants.START_POS_DEG);
+        SmartDashboard.putNumber("angleNewSetpoint", AngleConstants.START_POS_DEG);
 
         SmartDashboard.putNumber("climbRightPos", 0);
         SmartDashboard.putNumber("climbLeftPos", 0);
@@ -63,30 +63,30 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("climbRightOutput", 0);
         SmartDashboard.putNumber("climbLeftOutput", 0);
 
-        SmartDashboard.putNumber("feederPullVoltage", FeederConstants.FEEDER_PULL_VOLTS);
-        SmartDashboard.putNumber("feederPushVoltage", FeederConstants.FEEDER_PUSH_VOLTS);
+        SmartDashboard.putNumber("feederPullVoltage", FeederConstants.PULL_VOLTS);
+        SmartDashboard.putNumber("feederPushVoltage", FeederConstants.PUSH_VOLTS);
 
         SmartDashboard.putBoolean("feederSwitchStatus", false);
 
-        SmartDashboard.putNumber("intakePullVoltage", IntakeConstants.INTAKE_PULL_VOLTS);
-        SmartDashboard.putNumber("intakePushVoltage", IntakeConstants.INTAKE_PUSH_VOLTS);
+        SmartDashboard.putNumber("intakePullVoltage", IntakeConstants.PULL_VOLTS);
+        SmartDashboard.putNumber("intakePushVoltage", IntakeConstants.PUSH_VOLTS);
 
-        SmartDashboard.putNumber("shootTopKP", ShooterConstants.SHOOTER_TOP_KP);
-        SmartDashboard.putNumber("shootTopKI", ShooterConstants.SHOOTER_TOP_KI);
-        SmartDashboard.putNumber("shootTopKD", ShooterConstants.SHOOTER_TOP_KD);
+        SmartDashboard.putNumber("shootTopKP", ShooterConstants.TOP_KP);
+        SmartDashboard.putNumber("shootTopKI", ShooterConstants.TOP_KI);
+        SmartDashboard.putNumber("shootTopKD", ShooterConstants.TOP_KD);
 
-        SmartDashboard.putNumber("shootTopKS", ShooterConstants.SHOOTER_TOP_KS);
-        SmartDashboard.putNumber("shootTopKV", ShooterConstants.SHOOTER_TOP_KV);
+        SmartDashboard.putNumber("shootTopKS", ShooterConstants.TOP_KS);
+        SmartDashboard.putNumber("shootTopKV", ShooterConstants.TOP_KV);
 
-        SmartDashboard.putNumber("shootBottomKP", ShooterConstants.SHOOTER_BOTTOKP);
-        SmartDashboard.putNumber("shootBottomKI", ShooterConstants.SHOOTER_BOTTOKI);
-        SmartDashboard.putNumber("shootBottomKD", ShooterConstants.SHOOTER_BOTTOKD);
+        SmartDashboard.putNumber("shootBottomKP", ShooterConstants.BOTTOM_KP);
+        SmartDashboard.putNumber("shootBottomKI", ShooterConstants.BOTTOM_KI);
+        SmartDashboard.putNumber("shootBottomKD", ShooterConstants.BOTTOM_KD);
 
-        SmartDashboard.putNumber("shootBottomKS", ShooterConstants.SHOOTER_BOTTOKS);
-        SmartDashboard.putNumber("shootBottomKV", ShooterConstants.SHOOTER_BOTTOKV);
+        SmartDashboard.putNumber("shootBottomKS", ShooterConstants.BOTTOM_KS);
+        SmartDashboard.putNumber("shootBottomKV", ShooterConstants.BOTTOM_KV);
 
-        SmartDashboard.putNumber("shootTopRPM", ShooterConstants.SHOOTER_TOP_DEFAULT_RPM);
-        SmartDashboard.putNumber("shootBottomRPM", ShooterConstants.SHOOTER_BOTTODEFAULT_RPM);
+        SmartDashboard.putNumber("shootTopRPM", ShooterConstants.TOP_DEFAULT_RPM);
+        SmartDashboard.putNumber("shootBottomRPM", ShooterConstants.BOTTOM_DEFAULT_RPM);
         SmartDashboard.putNumber("shootTopOutput", 0);
         SmartDashboard.putNumber("shootBottomOutput", 0);
 
@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("llv2_turnI", LimelightConstants.TURN_I);
         SmartDashboard.putNumber("llv2_turnD", LimelightConstants.TURN_D);
 
-        SmartDashboard.putNumber("testShootAngle", AngleConstants.ANGLE_START_POS_DEG);
+        SmartDashboard.putNumber("testShootAngle", AngleConstants.START_POS_DEG);
     }
 
     /**

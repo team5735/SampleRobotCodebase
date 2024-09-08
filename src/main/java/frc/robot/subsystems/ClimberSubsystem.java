@@ -22,11 +22,11 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     private void up() {
-        sparkMax.setVoltage(-ClimberConstants.CLIMBER_UP_VOLTS);
+        sparkMax.setVoltage(-ClimberConstants.UP_VOLTS);
     }
 
     private void down() {
-        sparkMax.setVoltage(ClimberConstants.CLIMBER_DOWN_VOLTS);
+        sparkMax.setVoltage(ClimberConstants.DOWN_VOLTS);
     }
 
     private void stop() {

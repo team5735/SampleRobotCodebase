@@ -16,7 +16,7 @@ public class ShooterTopSubsystem extends SubsystemBase {
     private SimpleMotorFeedforward feedForward_top;
     private double setpoint;
 
-    private final TalonFX talon_top = new TalonFX(Constants.SHOOTER_MOTOR_TOP_ID);
+    private final TalonFX talon_top = new TalonFX(Constants.MOTOR_TOP_ID);
 
     public ShooterTopSubsystem() {
         talon_top.setNeutralMode(NeutralModeValue.Coast);
@@ -44,12 +44,12 @@ public class ShooterTopSubsystem extends SubsystemBase {
      * </ul>
      */
     public void updateProportions() {
-        double tkp = ShooterConstants.SHOOTER_TOP_KP;
-        double tki = ShooterConstants.SHOOTER_TOP_KI;
-        double tkd = ShooterConstants.SHOOTER_TOP_KD;
+        double tkp = ShooterConstants.TOP_KP;
+        double tki = ShooterConstants.TOP_KI;
+        double tkd = ShooterConstants.TOP_KD;
 
-        double tks = ShooterConstants.SHOOTER_TOP_KS;
-        double tkv = ShooterConstants.SHOOTER_TOP_KV;
+        double tks = ShooterConstants.TOP_KS;
+        double tkv = ShooterConstants.TOP_KV;
 
         pid_top.setPID(tkp, tki, tkd);
         feedForward_top = new SimpleMotorFeedforward(tks, tkv);

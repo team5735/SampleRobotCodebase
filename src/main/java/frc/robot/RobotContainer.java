@@ -61,7 +61,7 @@ public class RobotContainer {
             Constants.CLIMBER_MOTOR_LEFT_ID);
     private final ClimberSubsystem climberRightSubsystem = new ClimberSubsystem("right climber",
             Constants.CLIMBER_MOTOR_RIGHT_ID);
-    private final DrivetrainSubsystem drivetrain = TunerConstants.DriveTrain;
+    private final DrivetrainSubsystem drivetrain = TunerConstants.DRIVE_TRAIN;
 
     public static Supplier<Boolean> getFieldCentric = () -> true;
     private final Telemetry telemetry = new Telemetry(.1);
@@ -142,9 +142,9 @@ public class RobotContainer {
                         feederSubsystem, intakeSubsystem, shooterTopSubsystem,
                         shooterBottomSubsystem,
                         SmartDashboard.getNumber("shootTopRPM",
-                                ShooterConstants.SHOOTER_TOP_DEFAULT_RPM),
+                                ShooterConstants.TOP_DEFAULT_RPM),
                         SmartDashboard.getNumber("shootBottomRPM",
-                                ShooterConstants.SHOOTER_BOTTODEFAULT_RPM)));
+                                ShooterConstants.BOTTOM_DEFAULT_RPM)));
 
         // Aim the robot (never worked :c)
         drivingController.x().whileTrue(
@@ -172,8 +172,8 @@ public class RobotContainer {
                         new SequentialCommandGroup(
                                 new ShooterSpinUpCommand(
                                         shooterTopSubsystem, shooterBottomSubsystem,
-                                        ShooterConstants.SHOOTER_TOP_DEFAULT_RPM,
-                                        ShooterConstants.SHOOTER_BOTTODEFAULT_RPM),
+                                        ShooterConstants.TOP_DEFAULT_RPM,
+                                        ShooterConstants.BOTTOM_DEFAULT_RPM),
                                 new ParallelDeadlineGroup(
                                         feederSubsystem.pullStopCommand(),
                                         Compositions.shootersHoldNStop(shooterTopSubsystem,
@@ -187,9 +187,9 @@ public class RobotContainer {
                         feederSubsystem, intakeSubsystem, shooterTopSubsystem,
                         shooterBottomSubsystem,
                         SmartDashboard.getNumber("shootTopRPM",
-                                ShooterConstants.SHOOTER_TOP_DEFAULT_RPM),
+                                ShooterConstants.TOP_DEFAULT_RPM),
                         SmartDashboard.getNumber("shootBottomRPM",
-                                ShooterConstants.SHOOTER_BOTTODEFAULT_RPM)));
+                                ShooterConstants.BOTTOM_DEFAULT_RPM)));
         subsystemController.x().whileTrue(new ParallelCommandGroup(
                 intakeSubsystem.pushStopCommand(),
                 feederSubsystem.pushStopCommand()));

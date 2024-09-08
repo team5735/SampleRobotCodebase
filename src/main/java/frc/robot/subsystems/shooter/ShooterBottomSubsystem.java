@@ -16,7 +16,7 @@ public class ShooterBottomSubsystem extends SubsystemBase {
     private SimpleMotorFeedforward feedForward_bottom;
     private double setpoint;
 
-    private final TalonFX talon_bottom = new TalonFX(Constants.SHOOTER_MOTOR_BOTTOID);
+    private final TalonFX talon_bottom = new TalonFX(Constants.MOTOR_BOTTOID);
 
     public ShooterBottomSubsystem() {
         talon_bottom.setNeutralMode(NeutralModeValue.Coast);
@@ -43,12 +43,12 @@ public class ShooterBottomSubsystem extends SubsystemBase {
      * </ul>
      */
     public void updateProportions() {
-        double bkp = ShooterConstants.SHOOTER_BOTTOKP;
-        double bki = ShooterConstants.SHOOTER_BOTTOKI;
-        double bkd = ShooterConstants.SHOOTER_BOTTOKD;
+        double bkp = ShooterConstants.BOTTOM_KP;
+        double bki = ShooterConstants.BOTTOM_KI;
+        double bkd = ShooterConstants.BOTTOM_KD;
 
-        double bks = ShooterConstants.SHOOTER_BOTTOKS;
-        double bkv = ShooterConstants.SHOOTER_BOTTOKV;
+        double bks = ShooterConstants.BOTTOM_KS;
+        double bkv = ShooterConstants.BOTTOM_KV;
 
         pid_bottom.setPID(bkp, bki, bkd);
         feedForward_bottom = new SimpleMotorFeedforward(bks, bkv);
