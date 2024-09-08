@@ -58,11 +58,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("angleCurrentSetpoint", AngleConstants.ANGLE_START_POS_DEG);
         SmartDashboard.putNumber("angleNewSetpoint", AngleConstants.ANGLE_START_POS_DEG);
 
-        SmartDashboard.putNumber("climbRightUpVoltage", ClimberConstants.CLIMBER_RIGHT_UP_VOLTS);
-        SmartDashboard.putNumber("climbLeftUpVoltage", ClimberConstants.CLIMBER_LEFT_UP_VOLTS);
-        SmartDashboard.putNumber("climbRightDownVoltage", ClimberConstants.CLIMBER_RIGHT_DOWN_VOLTS);
-        SmartDashboard.putNumber("climbLeftDownVoltage", ClimberConstants.CLIMBER_LEFT_DOWN_VOLTS);
-
         SmartDashboard.putNumber("climbRightPos", 0);
         SmartDashboard.putNumber("climbLeftPos", 0);
 
