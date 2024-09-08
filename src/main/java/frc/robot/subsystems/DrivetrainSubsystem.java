@@ -169,7 +169,7 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
 
     // Converts from ChassisSpeeds to a swerve request for Pathplanner
     private void autoDriveRobotRelative(ChassisSpeeds robotChassisSpeeds) {
-        var discrete = ChassisSpeeds.discretize(robotChassisSpeeds, 1.0 / 20.0); // TODO: is this the right frequency?
+        var discrete = ChassisSpeeds.discretize(robotChassisSpeeds, 1.0 / 20.0);
 
         setControl(m_robotCentric
                 .withVelocityX(discrete.vxMetersPerSecond)
@@ -186,7 +186,7 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
         return new HolonomicPathFollowerConfig(drivePid,
                 turnPid,
                 25,
-                Math.sqrt(9.75 * 9.75 + 12.5 * 12.5), // radius (wtf)
+                Math.sqrt(9.75 * 9.75 + 12.5 * 12.5),
                 new ReplanningConfig());
     }
 
