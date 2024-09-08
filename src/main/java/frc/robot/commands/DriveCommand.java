@@ -1,4 +1,4 @@
-package frc.robot.commands.drivetrain;
+package frc.robot.commands;
 
 import java.util.function.Supplier;
 
@@ -67,9 +67,6 @@ public class DriveCommand extends Command {
             System.out.println("watchdog expired :( ");
             m_watchdog.printEpochs();
         }
-
-        // Testing please remove unless you put this here and still need it
-        SmartDashboard.putNumber("drivetrain reported theta", m_drivetrain.getRotation3d().getZ());
     }
 
     /**
