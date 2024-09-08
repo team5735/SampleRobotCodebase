@@ -64,10 +64,8 @@ public class RobotContainer {
             Constants.CLIMBER_MOTOR_RIGHT_ID);
     private final DrivetrainSubsystem m_drivetrain = TunerConstants.DriveTrain;
 
-    // Programming war crime :3
-    private static boolean m_isFieldCentric = true;
-    public static Supplier<Boolean> m_getFieldCentric = () -> m_isFieldCentric;
-    // private final Telemetry m_telemetry = new Telemetry(.1);
+    public static Supplier<Boolean> m_getFieldCentric = () -> true;
+    private final Telemetry m_telemetry = new Telemetry(.1);
 
     private double m_slowMultiplier = DrivetrainConstants.SLOW_SPEED;
     private double m_normalMultiplier = DrivetrainConstants.NORMAL_SPEED;
@@ -80,14 +78,14 @@ public class RobotContainer {
      * commands.
      */
     public RobotContainer() {
-        // m_drivetrain.registerTelemetry(m_telemetry::telemeterize);
-        // Configure the trigger bindings
+        m_drivetrain.registerTelemetry(m_telemetry::telemeterize);
+
         AutoCommands.registerCommands(m_intakeSubsystem, m_feederSubsystem, m_shooterTopSubsystem,
                 m_shooterBottomSubsystem);
         m_autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("pick an auto", m_autoChooser);
 
-        configureBindings();
+        configureDriverBindings();
     }
 
     private static double deadband(double input) {
@@ -111,15 +109,15 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
-    private void configureBindings() {
+    private void configureDriverBindings() {
+        // Outtake and intake, respectively
         m_drivingController.leftBumper().whileTrue(new ParallelCommandGroup(
                 m_intakeSubsystem.getPushStop(),
                 m_feederSubsystem.getPushStop()));
         m_drivingController.rightBumper()
                 .whileTrue(Compositions.feedNIn(m_feederSubsystem, m_intakeSubsystem));
 
-        m_drivingController.start().onTrue(Commands.runOnce(() -> updateMultipliers()));
-
+        // Drive the robot
         m_drivetrain.setDefaultCommand(
                 new DriveCommand(m_drivetrain,
                         () -> -deadband(m_drivingController.getLeftX()),
@@ -139,6 +137,7 @@ public class RobotContainer {
                                                     : m_normalMultiplier);
                         }));
 
+        // Intake, feed and shoot- all in one button!
         m_drivingController.a().whileTrue(
                 Compositions.feedAndShootAlsoIntake(
                         m_feederSubsystem, m_intakeSubsystem, m_shooterTopSubsystem,
@@ -148,32 +147,26 @@ public class RobotContainer {
                         SmartDashboard.getNumber("shootBottomRPM",
                                 ShooterConstants.SHOOTER_BOTTOM_DEFAULT_RPM)));
 
+        // Aim the robot (never worked :c)
         m_drivingController.x().whileTrue(
                 new LimelightAimCommand(m_limelightSubsystem, m_drivetrain, m_angleSubsystem));
+
+        // Reset the robot so that it understands that where it's currently facing is
+        // "forwards"
         m_drivingController.y().onTrue(Commands.runOnce(() -> {
             m_drivetrain.seedFieldRelative();
             m_drivetrain.getPigeon2().setYaw(0);
         }, m_drivetrain));
 
+        // Angle the angle changer straight up
         m_drivingController.povUp().onTrue(
                 Compositions.angleUpdateWithIntake(m_angleSubsystem.angleToMax(), m_angleSubsystem,
                         m_intakeSubsystem));
+        // Reset the angle changer to its base position
         m_drivingController.povDown().onTrue(
                 m_angleSubsystem.angleToBase());
 
-        m_drivingController.povLeft().onTrue(m_angleSubsystem.getSetAngle(180));
-
-        // some lines were not copied from the drivetrain
-
-        m_subsystemController.a().whileTrue(
-                Compositions.feedAndShootAlsoIntake(
-                        m_feederSubsystem, m_intakeSubsystem, m_shooterTopSubsystem,
-                        m_shooterBottomSubsystem,
-                        SmartDashboard.getNumber("shootTopRPM",
-                                ShooterConstants.SHOOTER_TOP_DEFAULT_RPM),
-                        SmartDashboard.getNumber("shootBottomRPM",
-                                ShooterConstants.SHOOTER_BOTTOM_DEFAULT_RPM)));
-
+        // Shoot the NOTE (I think) (why is this here again?)
         m_drivingController.povRight()
                 .whileTrue(new ParallelCommandGroup(
                         m_angleSubsystem.getSetSmartDashboard(),
@@ -187,13 +180,23 @@ public class RobotContainer {
                                         Compositions.shootersHoldNStop(m_shooterTopSubsystem,
                                                 m_shooterBottomSubsystem)))));
 
-        m_subsystemController.y().whileTrue(Compositions.shootNAngleFromStageBack(
-                m_angleSubsystem, m_shooterTopSubsystem, m_shooterBottomSubsystem, m_feederSubsystem,
-                m_intakeSubsystem));
+    }
+
+    void configureSubsystemBindings() {
+        m_subsystemController.a().whileTrue(
+                Compositions.feedAndShootAlsoIntake(
+                        m_feederSubsystem, m_intakeSubsystem, m_shooterTopSubsystem,
+                        m_shooterBottomSubsystem,
+                        SmartDashboard.getNumber("shootTopRPM",
+                                ShooterConstants.SHOOTER_TOP_DEFAULT_RPM),
+                        SmartDashboard.getNumber("shootBottomRPM",
+                                ShooterConstants.SHOOTER_BOTTOM_DEFAULT_RPM)));
         m_subsystemController.x().whileTrue(new ParallelCommandGroup(
                 m_intakeSubsystem.getPushStop(),
                 m_feederSubsystem.getPushStop()));
-        m_subsystemController.a().whileTrue(m_limelightSubsystem.blinkLeds());
+        m_subsystemController.y().whileTrue(Compositions.shootNAngleFromStageBack(
+                m_angleSubsystem, m_shooterTopSubsystem, m_shooterBottomSubsystem, m_feederSubsystem,
+                m_intakeSubsystem));
 
         m_subsystemController.leftBumper().whileTrue(m_climberLeftSubsystem.getUpStop());
         m_subsystemController.rightBumper().whileTrue(m_climberRightSubsystem.getUpStop());
@@ -204,12 +207,6 @@ public class RobotContainer {
         m_shooterTopSubsystem.setDefaultCommand(m_shooterTopSubsystem.shootPIDCommand());
         m_shooterBottomSubsystem
                 .setDefaultCommand(m_shooterBottomSubsystem.shootPIDCommand());
-    }
-
-    private void updateMultipliers() {
-        m_slowMultiplier = SmartDashboard.getNumber("drivetrain_slowSpeed", m_slowMultiplier);
-        m_normalMultiplier = SmartDashboard.getNumber("drivetrain_normalSpeed", m_normalMultiplier);
-        m_turboMultiplier = SmartDashboard.getNumber("drivetrain_turboSpeed", m_turboMultiplier);
     }
 
     /**
@@ -229,7 +226,7 @@ public class RobotContainer {
         return auto;
     }
 
-    public void resetShenanigans() {
+    public void resetSetpoints() {
         m_shooterTopSubsystem.setSetpoint(0);
         m_shooterBottomSubsystem.setSetpoint(0);
         m_angleSubsystem.setSetpoint(235);
