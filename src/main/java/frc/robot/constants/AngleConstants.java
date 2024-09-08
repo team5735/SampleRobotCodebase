@@ -9,7 +9,7 @@ public class AngleConstants {
     public static final double ANGLE_KG = 0.78;
     public static final double ANGLE_KV = 0;
 
-    public static final double ANGLE_START_POS_ROT = 235. / 360; 
+    public static final double ANGLE_START_POS_ROT = 235. / 360;
     public static final double ANGLE_START_POS_DEG = convertRotationsToDegrees(ANGLE_START_POS_ROT);
 
     public static final double ANGLE_HIGHEST_DEG = 237;
@@ -19,10 +19,10 @@ public class AngleConstants {
     public static final double ANGLE_STAGE_BACK_SHOOT_DEG = 190;
     public static final double ANGLE_STAGE_FRONT_SHOOT_DEG = 200;
 
-    // planetary 9:1, chain drive 16:42
-    public static final double ANGLE_MOTOR_TO_OUTPUT_RATIO = 1. / 9 * 16. / 42;
+    // planetary gearbox ratio is 9:1, chain drive ratio is 16:42
+    public static final double ANGLE_MOTOR_TO_OUTPUT_RATIO = 1.0 / 9 * 16.0 / 42;
     // inverse of the previous ratio
-    public static final double ANGLE_OUTPUT_TO_MOTOR_RATIO = 1. / ANGLE_MOTOR_TO_OUTPUT_RATIO;
+    public static final double ANGLE_OUTPUT_TO_MOTOR_RATIO = 1 / ANGLE_MOTOR_TO_OUTPUT_RATIO;
 
     public static double convertRotationsToDegrees(double rotations) {
         rotations %= 1;
