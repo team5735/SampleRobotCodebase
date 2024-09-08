@@ -57,8 +57,6 @@ public class ShooterTopSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // updateProportions();
-
         SmartDashboard.putNumber("shootTopOutput", Math.abs(getTopMeasurement()));
         SmartDashboard.putNumber("shootTopPIDError", Math.abs(m_pid_top.getPositionError()));
         SmartDashboard.putNumber("shootTopSetpoint", m_setpoint);
