@@ -111,8 +111,8 @@ public class RobotContainer {
     private void configureDriverBindings() {
         // Outtake and intake, respectively
         drivingController.leftBumper().whileTrue(new ParallelCommandGroup(
-                intakeSubsystem.getPushStop(),
-                feederSubsystem.getPushStop()));
+                intakeSubsystem.pushStopCommand(),
+                feederSubsystem.pushStopCommand()));
         drivingController.rightBumper()
                 .whileTrue(Compositions.feedNIn(feederSubsystem, intakeSubsystem));
 
@@ -168,14 +168,14 @@ public class RobotContainer {
         // Shoot the NOTE (I think) (why is this here again?)
         drivingController.povRight()
                 .whileTrue(new ParallelCommandGroup(
-                        angleSubsystem.getSetSmartDashboard(),
+                        angleSubsystem.setSmartDashboardCommand(),
                         new SequentialCommandGroup(
                                 new ShooterSpinUpCommand(
                                         shooterTopSubsystem, shooterBottomSubsystem,
                                         ShooterConstants.SHOOTER_TOP_DEFAULT_RPM,
                                         ShooterConstants.SHOOTER_BOTTODEFAULT_RPM),
                                 new ParallelDeadlineGroup(
-                                        feederSubsystem.getPullStop(),
+                                        feederSubsystem.pullStopCommand(),
                                         Compositions.shootersHoldNStop(shooterTopSubsystem,
                                                 shooterBottomSubsystem)))));
 
@@ -191,16 +191,16 @@ public class RobotContainer {
                         SmartDashboard.getNumber("shootBottomRPM",
                                 ShooterConstants.SHOOTER_BOTTODEFAULT_RPM)));
         subsystemController.x().whileTrue(new ParallelCommandGroup(
-                intakeSubsystem.getPushStop(),
-                feederSubsystem.getPushStop()));
+                intakeSubsystem.pushStopCommand(),
+                feederSubsystem.pushStopCommand()));
         subsystemController.y().whileTrue(Compositions.shootNAngleFromStageBack(
                 angleSubsystem, shooterTopSubsystem, shooterBottomSubsystem, feederSubsystem,
                 intakeSubsystem));
 
-        subsystemController.leftBumper().whileTrue(climberLeftSubsystem.getUpStop());
-        subsystemController.rightBumper().whileTrue(climberRightSubsystem.getUpStop());
-        subsystemController.leftTrigger(0.1).whileTrue(climberLeftSubsystem.getDownStop());
-        subsystemController.rightTrigger(0.1).whileTrue(climberRightSubsystem.getDownStop());
+        subsystemController.leftBumper().whileTrue(climberLeftSubsystem.upStopCommand());
+        subsystemController.rightBumper().whileTrue(climberRightSubsystem.upStopCommand());
+        subsystemController.leftTrigger(0.1).whileTrue(climberLeftSubsystem.downStopCommand());
+        subsystemController.rightTrigger(0.1).whileTrue(climberRightSubsystem.downStopCommand());
 
         angleSubsystem.setDefaultCommand(angleSubsystem.anglePIDCommand(angleSubsystem));
         shooterTopSubsystem.setDefaultCommand(shooterTopSubsystem.shootPIDCommand());

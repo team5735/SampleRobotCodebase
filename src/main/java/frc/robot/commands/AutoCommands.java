@@ -31,15 +31,17 @@ public class AutoCommands {
         commandsToRegister.put("shooterStart", shooterStart(shooterTop, shooterBottom));
 
         commandsToRegister.put("stopShooter", stopShooter(shooterTop, shooterBottom));
-        commandsToRegister.put("shootNote", new ParallelCommandGroup(feeder.getPullStop(), intake.getPullStop()));
+        commandsToRegister.put("shootNote",
+                new ParallelCommandGroup(feeder.pullStopCommand(), intake.pullStopCommand()));
         commandsToRegister.put("waitShootSpinup", spunUpDeadline(shooterTop, shooterBottom));
 
         NamedCommands.registerCommands(commandsToRegister);
     }
 
     public static Command getNote(IntakeSubsystem intake, FeederSubsystem feeder) {
-        return new SequentialCommandGroup(new ParallelDeadlineGroup(feeder.getPrimeNote(), intake.getPullStop()),
-                feeder.getUnprimeNote());
+        return new SequentialCommandGroup(
+                new ParallelDeadlineGroup(feeder.primeNoteCommand(), intake.pullStopCommand()),
+                feeder.unprimeNoteCommand());
     }
 
     public static Command shooterStart(ShooterTopSubsystem top, ShooterBottomSubsystem bottom) {

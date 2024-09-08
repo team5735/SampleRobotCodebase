@@ -43,7 +43,7 @@ public class LimelightSubsystem extends SubsystemBase {
         ledModePublisher.set(1);
     }
 
-    public Command blinkLeds() {
+    public Command blinkLedsCommand() {
         return Commands.sequence(
                 runOnce(() -> ledsOn()),
                 runOnce(() -> Commands.waitSeconds(LimelightConstants.BLINK_TIME)),

@@ -239,7 +239,7 @@ public class AngleSubsystem extends SubsystemBase {
      * being scheduled.
      */
     public Command angleToBase() {
-        return getSetAngle(AngleConstants.ANGLE_START_POS_DEG);
+        return setAngleCommand(AngleConstants.ANGLE_START_POS_DEG);
     }
 
     /**
@@ -247,7 +247,7 @@ public class AngleSubsystem extends SubsystemBase {
      * position possible (lowest degrees + 10) upon being scheduled.
      */
     public Command angleToMax() {
-        return getSetAngle(AngleConstants.ANGLE_LOWEST_DEG + 10);
+        return setAngleCommand(AngleConstants.ANGLE_LOWEST_DEG + 10);
     }
 
     /**
@@ -255,7 +255,7 @@ public class AngleSubsystem extends SubsystemBase {
      * angle upon being scheduled.
      */
     public Command angleToStageBack() {
-        return getSetAngle(AngleConstants.ANGLE_STAGE_BACK_SHOOT_DEG);
+        return setAngleCommand(AngleConstants.ANGLE_STAGE_BACK_SHOOT_DEG);
     }
 
     /**
@@ -263,7 +263,7 @@ public class AngleSubsystem extends SubsystemBase {
      * angle upon being scheduled.
      */
     public Command angleToStageFront() {
-        return getSetAngle(AngleConstants.ANGLE_STAGE_FRONT_SHOOT_DEG);
+        return setAngleCommand(AngleConstants.ANGLE_STAGE_FRONT_SHOOT_DEG);
     }
 
     /**
@@ -271,7 +271,7 @@ public class AngleSubsystem extends SubsystemBase {
      * the function was called.
      */
     public Command angleIncrease() {
-        return getSetAngle(setpoint - 10).repeatedly();
+        return setAngleCommand(setpoint - 10).repeatedly();
     }
 
     /**
@@ -279,13 +279,13 @@ public class AngleSubsystem extends SubsystemBase {
      * when the function was called.
      */
     public Command angleDecrease() {
-        return getSetAngle(setpoint + 10).repeatedly();
+        return setAngleCommand(setpoint + 10).repeatedly();
     }
 
     /**
      * Returns a Command that resets the PID.
      */
-    public Command getPIDReset() {
+    public Command pidResetCommand() {
         return Commands.runOnce(() -> pidReset());
     }
 
@@ -295,7 +295,7 @@ public class AngleSubsystem extends SubsystemBase {
      *
      * @param angle The angle to set as the setpoint
      */
-    public Command getSetAngle(double angle) {
+    public Command setAngleCommand(double angle) {
         return FactoryCommands.runOnceUntil(() -> setSetpoint(angle), () -> isAtPosition(angle));
     }
 
@@ -303,7 +303,7 @@ public class AngleSubsystem extends SubsystemBase {
      * Returns a Command that sets the angle to the angle specified in
      * testShootAngle in SmartDashboard.
      */
-    public Command getSetSmartDashboard() {
+    public Command setSmartDashboardCommand() {
         return FactoryCommands.runOnceUntil(() -> {
             double setpoint = SmartDashboard.getNumber("testShootAngle",
                     AngleConstants.ANGLE_START_POS_DEG);
@@ -315,7 +315,7 @@ public class AngleSubsystem extends SubsystemBase {
      * This factory command releases the brakes on initialize and then engages the
      * brakes once more when interrupted.
      */
-    public Command getReleaseMotors() {
+    public Command releaseMotorsCommand() {
         return startEnd(() -> releaseBrakes(), () -> engageBrakes());
     }
 }

@@ -113,11 +113,11 @@ public class DrivetrainSubsystem extends SwerveDrivetrain implements Subsystem {
         setControl(brake);
     }
 
-    public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
+    public Command applyRequestCommand(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-    public Command nyoom() {
+    public Command nyoomCommand() {
         return run(() -> drive(8.0));
     }
 

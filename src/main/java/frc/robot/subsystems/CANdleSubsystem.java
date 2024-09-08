@@ -25,27 +25,27 @@ public class CANdleSubsystem extends SubsystemBase {
         candle.animate(new RainbowAnimation(0.5, 1.0, 8));
     }
 
-    public Command colorReady() {
+    public Command colorReadyCommand() {
         return setToColorByID(CANdleConstants.READY);
     }
 
-    public Command colorAuto() {
+    public Command colorAutoCommand() {
         return setToColorByID(CANdleConstants.AUTO);
     }
 
-    public Command colorAiming() {
+    public Command colorAimingCommand() {
         return setToColorByID(CANdleConstants.AIMING);
     }
 
-    public Command colorAimed() {
+    public Command colorAimedCommand() {
         return setToColorByID(CANdleConstants.AIMED);
     }
 
-    public Command colorIntakeRunning() {
+    public Command colorIntakeRunningCommand() {
         return setToColorByID(CANdleConstants.INTAKE_RUNNING);
     }
 
-    public Command colorShooting() {
+    public Command colorShootingCommand() {
         return setToColorByID(CANdleConstants.SHOOTING);
     }
 

@@ -37,8 +37,8 @@ public class Compositions {
                         new ShooterSpinUpCommand(shooterTop, shooterBottom, topRPM, bottomRPM),
                         new WaitCommand(0.5)),
                 new ParallelCommandGroup(
-                        feeder.getPullStop(),
-                        intake.getPullStop(),
+                        feeder.pullStopCommand(),
+                        intake.pullStopCommand(),
                         shootersHoldNStop(shooterTop, shooterBottom)));
     }
 
@@ -49,7 +49,7 @@ public class Compositions {
                         angleSetCommand,
                         new ParallelDeadlineGroup(
                                 new WaitCommand(2),
-                                intake.getPullStop()))
+                                intake.pullStopCommand()))
                 : angleSetCommand;
     }
 
@@ -74,10 +74,10 @@ public class Compositions {
     public static Command feedNIn(FeederSubsystem feeder, IntakeSubsystem intake) {
         return new SequentialCommandGroup(
                 new ParallelDeadlineGroup(
-                        feeder.getPrimeNote(),
-                        intake.getPullStop()),
-                feeder.getUnprimeNote(),
-                feeder.getPrimeNote());
+                        feeder.primeNoteCommand(),
+                        intake.pullStopCommand()),
+                feeder.unprimeNoteCommand(),
+                feeder.primeNoteCommand());
     }
 
     /**

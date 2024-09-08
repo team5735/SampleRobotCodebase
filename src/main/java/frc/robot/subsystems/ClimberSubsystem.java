@@ -39,15 +39,15 @@ public class ClimberSubsystem extends SubsystemBase {
         doubles.set("position", encoder.getPosition());
     }
 
-    public Command getUpStop() {
+    public Command upStopCommand() {
         return startEnd(() -> up(), () -> stop());
     }
 
-    public Command getDownStop() {
+    public Command downStopCommand() {
         return startEnd(() -> down(), () -> stop());
     }
 
-    public Command getStop() {
+    public Command stopCommand() {
         return runOnce(() -> stop());
     }
 }

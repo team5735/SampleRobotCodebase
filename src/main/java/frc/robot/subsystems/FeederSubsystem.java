@@ -47,23 +47,23 @@ public class FeederSubsystem extends SubsystemBase {
         return beamBreak.get();
     }
 
-    public Command getPullStop() {
+    public Command pullStopCommand() {
         return startEnd(() -> pull(), () -> stop());
     }
 
-    public Command getPushStop() {
+    public Command pushStopCommand() {
         return startEnd(() -> push(), () -> stop());
     }
 
-    public Command getPrimeNote() {
+    public Command primeNoteCommand() {
         return FactoryCommands.startEndUntil(() -> pull(), () -> stop(), () -> getBeamBreakStatus(), this);
     }
 
-    public Command getUnprimeNote() {
+    public Command unprimeNoteCommand() {
         return FactoryCommands.startEndUntil(() -> push(), () -> stop(), () -> !getBeamBreakStatus(), this);
     }
 
-    public Command getStop() {
+    public Command stopCommand() {
         return runOnce(() -> stop());
     }
 }
