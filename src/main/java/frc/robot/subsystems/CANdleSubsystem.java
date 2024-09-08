@@ -17,7 +17,6 @@ import frc.robot.constants.Constants;
 public class CANdleSubsystem extends SubsystemBase {
     private CANdle candle;
 
-    /** Creates a new CANdleSubsystem. */
     public CANdleSubsystem() {
         candle = new CANdle(Constants.CANDLE_ID);
     }
@@ -58,26 +57,5 @@ public class CANdleSubsystem extends SubsystemBase {
 
     private void setToColor(Color color) {
         candle.setLEDs(color.getRed(), color.getGreen(), color.getBlue());
-    }
-
-    /**
-     * An example method querying a boolean state of the subsystem (for example,
-     * a digital sensor).
-     *
-     * @return value of some boolean subsystem state, such as a digital sensor.
-     */
-    public boolean exampleCondition() {
-        // Query some boolean state, such as a digital sensor.
-        return false;
-    }
-
-    @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
-    }
-
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
     }
 }
