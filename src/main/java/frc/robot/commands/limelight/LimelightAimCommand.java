@@ -19,7 +19,6 @@ import frc.robot.util.AllianceSwitcher;
 import frc.robot.util.NTBooleanSection;
 import frc.robot.util.NTDoubleSection;
 
-/** An example command that uses an example subsystem. */
 public class LimelightAimCommand extends Command {
     private LimelightSubsystem m_limelight;
     private DrivetrainSubsystem m_drivetrain;
@@ -48,17 +47,11 @@ public class LimelightAimCommand extends Command {
      */
     public LimelightAimCommand(final LimelightSubsystem limelight, final DrivetrainSubsystem drivetrain,
             final AngleSubsystem angleSubsystem) {
-        // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(limelight, drivetrain);
         m_limelight = limelight;
         m_drivetrain = drivetrain;
         m_angleChanger = angleSubsystem;
         m_targetAcquired = false;
-    }
-
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -107,22 +100,26 @@ public class LimelightAimCommand extends Command {
         m_watchdog.printEpochs();
     }
 
-    // checks to see if the robot is within reasonable shooting range of the target
+    /*
+     * Checks to see if the robot is within reasonable shooting range of the target
+     */
     private void checkBotCanAim(Translation2d robotPosition, Translation3d targetPosition) {
         boolean botIsCloseEnough = robotPosition
                 .getDistance(targetPosition.toTranslation2d()) < LimelightConstants.BOT_SHOOTING_DISTANCE;
-        if (!botIsCloseEnough) {
-            m_doubles.set("cannot aim distance",
-                    robotPosition.getDistance(m_hoodPos.toTranslation2d()));
-            Translation2d robotToTarget = targetPosition.toTranslation2d().minus(robotPosition);
-            Translation2d desiredVelocity = robotToTarget.div(robotToTarget.getNorm()) // normalize the vector
-                    .times(LimelightConstants.DRIVETRAIN_MOVEMENT_SPEED); // set magnitude to allowed drivetrain
-                                                                          // movement speed
-            // m_drivetrain.drive(desiredVelocity);
-            m_doubles.set("drivetrain speed x", desiredVelocity.getX());
-            m_doubles.set("drivetrain speed y", desiredVelocity.getY());
+
+        if (botIsCloseEnough) {
             return;
         }
+
+        m_doubles.set("cannot aim distance",
+                robotPosition.getDistance(m_hoodPos.toTranslation2d()));
+        Translation2d robotToTarget = targetPosition.toTranslation2d().minus(robotPosition);
+        Translation2d desiredVelocity = robotToTarget.div(robotToTarget.getNorm())
+                .times(LimelightConstants.DRIVETRAIN_MOVEMENT_SPEED); // set magnitude to allowed drivetrain
+                                                                      // movement speed
+        m_doubles.set("drivetrain speed x", desiredVelocity.getX());
+        m_doubles.set("drivetrain speed y", desiredVelocity.getY());
+        return;
     }
 
     private void aimHorizontally(Translation2d currentRobotPoseToTarget, double curRobotRot) {
@@ -145,12 +142,11 @@ public class LimelightAimCommand extends Command {
     }
 
     private void aimVertically(Translation3d angler, Translation3d target) {
-        // right triangle spam
         // theta 0 is parallel to the ground and facing the front of the robot
         Translation3d anglerToTarget = target.minus(angler);
         double anglerToTargetAngle1 = Math.atan2(anglerToTarget.getZ(), anglerToTarget.getX());
-        // double check this
         double anglerToTargetAngle2 = Math.acos(LimelightConstants.ANGLE_CHANGER_RADIUS / anglerToTarget.getNorm());
+
         double angleChangerDesiredAngle = radiansEnsureInBounds(anglerToTargetAngle1 + anglerToTargetAngle2);
         double anglerSetpoint = -Math.toDegrees(angleChangerDesiredAngle) + 180;
 
@@ -173,18 +169,13 @@ public class LimelightAimCommand extends Command {
         return in;
     }
 
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(final boolean interrupted) {
-    }
-
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         if (LimelightConstants.INFINITE_AIM) {
             return false;
-        } else {
-            return m_targetAcquired;
         }
+
+        return m_targetAcquired;
     }
 }
