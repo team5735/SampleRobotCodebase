@@ -1,3 +1,5 @@
+// THIS IS A GENERATED FILE. Some of these values have been tweaked, however.
+
 package frc.robot.constants;
 
 import com.ctre.phoenix6.configs.Slot0Configs;

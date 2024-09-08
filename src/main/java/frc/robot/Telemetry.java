@@ -1,3 +1,4 @@
+// THIS IS A GENERATED FILE.
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
