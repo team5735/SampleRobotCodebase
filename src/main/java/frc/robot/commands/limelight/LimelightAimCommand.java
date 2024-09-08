@@ -60,7 +60,9 @@ public class LimelightAimCommand extends Command {
 
         Pose3d botPose = m_limelight.getBotPose();
         m_watchdog.addEpoch("get bot pose");
-        if (m_limelight.getNumTargets() < 2) {
+        // we're ignoring the fact that 1 Apriltag isn't enough for a precise position
+        // estimate
+        if (!m_limelight.hasTarget()) {
             m_booleans.set("spinning", true);
             m_drivetrain.drive(LimelightConstants.CLUELESS_TURN_SPEED);
             return;

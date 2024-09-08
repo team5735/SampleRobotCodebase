@@ -35,11 +35,6 @@ public class LimelightSubsystem extends SubsystemBase {
         return targetVisibleSubscriber.get() == 1;
     }
 
-    public int getNumTargets() {
-        // TODO
-        return 1;
-    }
-
     public void ledsOn() {
         ledModePublisher.set(3);
     }
