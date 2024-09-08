@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.limelight.LimelightAimCommand;
-import frc.robot.commands.shooter.ShooterSpinUpCommand;
+import frc.robot.commands.ShooterSpinUpCommand;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.OperatorConstants;
 import frc.robot.constants.DrivetrainConstants;
