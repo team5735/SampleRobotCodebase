@@ -81,7 +81,7 @@ public class ShooterBottomSubsystem extends SubsystemBase {
 
     public void setSetpoint(double setpoint) {
         if (setpoint >= 0)
-            setpoint = setpoint;
+            this.setpoint = setpoint;
     }
 
     public void stop() {
