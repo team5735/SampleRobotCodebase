@@ -48,7 +48,7 @@ public class RobotContainer {
     private final CommandXboxController drivingController = new CommandXboxController(
             OperatorConstants.DRIVER_CONTROLLER_PORT);
     private final CommandXboxController subsystemController = new CommandXboxController(
-            OperatorConstants.SUBSYSTECONTROLLER_PORT);
+            OperatorConstants.SUBSYSTEM_CONTROLLER_PORT);
 
     private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 

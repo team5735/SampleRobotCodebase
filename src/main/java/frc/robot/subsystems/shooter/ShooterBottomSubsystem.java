@@ -16,7 +16,7 @@ public class ShooterBottomSubsystem extends SubsystemBase {
     private SimpleMotorFeedforward feedForward_bottom;
     private double setpoint;
 
-    private final TalonFX talon_bottom = new TalonFX(Constants.MOTOR_BOTTOID);
+    private final TalonFX talon_bottom = new TalonFX(Constants.MOTOR_BOTTOM_ID);
 
     public ShooterBottomSubsystem() {
         talon_bottom.setNeutralMode(NeutralModeValue.Coast);

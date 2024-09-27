@@ -15,7 +15,7 @@ import frc.robot.constants.FeederConstants;
 public class FeederSubsystem extends SubsystemBase {
     private final CANSparkMax sparkMax_pull = new CANSparkMax(Constants.FEEDER_MOTOR_ID, MotorType.kBrushless);
 
-    private final DigitalInput beamBreak = new DigitalInput(Constants.FEEDER_BEAPIN);
+    private final DigitalInput beamBreak = new DigitalInput(Constants.FEEDER_BEAM_PIN);
 
     public FeederSubsystem() {
         sparkMax_pull.setInverted(true);
