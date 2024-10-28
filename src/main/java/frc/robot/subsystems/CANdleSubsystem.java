@@ -26,32 +26,32 @@ public class CANdleSubsystem extends SubsystemBase {
     }
 
     public Command colorReadyCommand() {
-        return setToColorByID(CANdleConstants.READY);
+        return setToColorByState(CANdleConstants.LedState.READY);
     }
 
     public Command colorAutoCommand() {
-        return setToColorByID(CANdleConstants.AUTO);
+        return setToColorByState(CANdleConstants.LedState.AUTO);
     }
 
     public Command colorAimingCommand() {
-        return setToColorByID(CANdleConstants.AIMING);
+        return setToColorByState(CANdleConstants.LedState.AIMING);
     }
 
     public Command colorAimedCommand() {
-        return setToColorByID(CANdleConstants.AIMED);
+        return setToColorByState(CANdleConstants.LedState.AIMED);
     }
 
     public Command colorIntakeRunningCommand() {
-        return setToColorByID(CANdleConstants.INTAKE_RUNNING);
+        return setToColorByState(CANdleConstants.LedState.INTAKE_RUNNING);
     }
 
     public Command colorShootingCommand() {
-        return setToColorByID(CANdleConstants.SHOOTING);
+        return setToColorByState(CANdleConstants.LedState.SHOOTING);
     }
 
-    private Command setToColorByID(int id) {
+    private Command setToColorByState(CANdleConstants.LedState state) {
         return runOnce(() -> {
-            setToColor(CANdleConstants.COLORS[id]);
+            setToColor(state.ledColor);
         });
     }
 
