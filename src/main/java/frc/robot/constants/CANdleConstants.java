@@ -11,7 +11,7 @@ public class CANdleConstants {
         INTAKE_RUNNING(new Color(127, 0, 0)), // Dim Red
         SHOOTING(Color.RED);
 
-        public Color ledColor;
+        public final Color ledColor;
         
         LedState(Color ledColor){
             this.ledColor = ledColor;
