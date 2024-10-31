@@ -85,6 +85,7 @@ public class RobotContainer {
         SmartDashboard.putData("pick an auto", autoChooser);
 
         configureDriverBindings();
+        configureSubsystemBindings();
     }
 
     private static double deadband(double input) {
