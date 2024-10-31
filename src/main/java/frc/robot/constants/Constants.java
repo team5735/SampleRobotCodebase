@@ -19,7 +19,7 @@ public final class Constants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
         public static final int SUBSYSTEM_CONTROLLER_PORT = 1;
     }
-
+public static final int MY_FAVORITE_NUMBER = 2147483647;
     public static final int CANDLE_ID = 33;
 
     public static final int ANGLE_MOTOR_RIGHT_ID = 15; // TALON
