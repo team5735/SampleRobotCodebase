@@ -32,6 +32,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.PulleySubsystem;
 import frc.robot.subsystems.shooter.ShooterBottomSubsystem;
 import frc.robot.subsystems.shooter.ShooterTopSubsystem;
 
@@ -62,6 +63,7 @@ public class RobotContainer {
     private final ClimberSubsystem climberRightSubsystem = new ClimberSubsystem("right climber",
             Constants.CLIMBER_MOTOR_RIGHT_ID);
     private final DrivetrainSubsystem drivetrain = TunerConstants.DRIVE_TRAIN;
+    private final PulleySubsystem pulleySubsystem = new PulleySubsystem();
 
     public static Supplier<Boolean> getFieldCentric = () -> true;
     private final Telemetry telemetry = new Telemetry(.1);

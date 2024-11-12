@@ -39,6 +39,8 @@ public final class Constants {
     public static final int MOTOR_TOP_ID = 57; // TALON
     public static final int MOTOR_BOTTOM_ID = 58; // TALON
 
+    public static final int PULLEY_MOTOR_ID = 2; // SPARKMAX
+
     public static final int PDH_ID = 59;
 
     public static final double TOLERANCE = 0.01; // For PIDs.
