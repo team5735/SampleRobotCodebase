@@ -204,7 +204,7 @@ public class RobotContainer {
         subsystemController.leftTrigger(0.1).whileTrue(climberLeftSubsystem.downStopCommand());
         subsystemController.rightTrigger(0.1).whileTrue(climberRightSubsystem.downStopCommand());
 
-        angleSubsystem.setDefaultCommand(angleSubsystem.anglePIDCommand(angleSubsystem));
+        angleSubsystem.setDefaultCommand(angleSubsystem.anglePIDCommand());
         shooterTopSubsystem.setDefaultCommand(shooterTopSubsystem.shootPIDCommand());
         shooterBottomSubsystem
                 .setDefaultCommand(shooterBottomSubsystem.shootPIDCommand());
@@ -230,6 +230,6 @@ public class RobotContainer {
     public void resetSetpoints() {
         shooterTopSubsystem.setSetpoint(0);
         shooterBottomSubsystem.setSetpoint(0);
-        angleSubsystem.setSetpoint(235);
+        angleSubsystem.setGoalPos(235);
     }
 }

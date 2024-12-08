@@ -9,6 +9,9 @@ public class AngleConstants {
     public static final double KG = 0.78;
     public static final double KV = 0;
 
+    public static final double MAX_VEL_MPS = 0;
+    public static final double MAX_ACC_MPSPS = 0;
+
     public static final double START_POS_ROT = 235. / 360;
     public static final double START_POS_DEG = convertRotationsToDegrees(START_POS_ROT);
 

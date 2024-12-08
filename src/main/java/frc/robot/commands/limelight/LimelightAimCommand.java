@@ -152,7 +152,7 @@ public class LimelightAimCommand extends Command {
 
         doubles.set("angle changer radians", angleChangerDesiredAngle);
 
-        angleChanger.setSetpoint(anglerSetpoint);
+        angleChanger.setGoalPos(anglerSetpoint);
     }
 
     public static double positiveToPosNeg(double in) {
