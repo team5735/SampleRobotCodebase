@@ -54,8 +54,8 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putNumber("anglePos", 0);
 
-        SmartDashboard.putNumber("angleCurrentSetpoint", AngleConstants.START_POS_DEG);
-        SmartDashboard.putNumber("angleNewSetpoint", AngleConstants.START_POS_DEG);
+        SmartDashboard.putNumber("angleGoalPos", AngleConstants.START_POS_DEG);
+        SmartDashboard.putNumber("angleNewGoalPos", AngleConstants.START_POS_DEG);
 
         SmartDashboard.putNumber("climbRightPos", 0);
         SmartDashboard.putNumber("climbLeftPos", 0);

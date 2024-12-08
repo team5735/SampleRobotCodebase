@@ -44,7 +44,7 @@ public class Compositions {
 
     public static Command angleUpdateWithIntake(Command angleSetCommand, AngleSubsystem angler,
             IntakeSubsystem intake) {
-        return (angler.isAtBase())
+        return (angler.isAtBase(angler.getMeasurement()))
                 ? new ParallelCommandGroup(
                         angleSetCommand,
                         new ParallelDeadlineGroup(
