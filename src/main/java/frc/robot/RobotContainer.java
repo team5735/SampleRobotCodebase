@@ -27,6 +27,7 @@ import frc.robot.constants.ShooterConstants.ShooterType;
 import frc.robot.constants.DrivetrainConstants;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.constants.TunerConstants;
+import frc.robot.constants.ClimberConstants.ClimberType;
 import frc.robot.subsystems.AngleSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -57,10 +58,8 @@ public class RobotContainer {
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
     private final ShooterSubsystem shooterTopSubsystem = new ShooterSubsystem(ShooterType.TOP);
     private final ShooterSubsystem shooterBottomSubsystem = new ShooterSubsystem(ShooterType.BOTTOM);
-    private final ClimberSubsystem climberLeftSubsystem = new ClimberSubsystem("left climber",
-            Constants.CLIMBER_MOTOR_LEFT_ID);
-    private final ClimberSubsystem climberRightSubsystem = new ClimberSubsystem("right climber",
-            Constants.CLIMBER_MOTOR_RIGHT_ID);
+    private final ClimberSubsystem climberLeftSubsystem = new ClimberSubsystem(ClimberType.LEFT);
+    private final ClimberSubsystem climberRightSubsystem = new ClimberSubsystem(ClimberType.RIGHT);
     private final DrivetrainSubsystem drivetrain = TunerConstants.DRIVE_TRAIN;
 
     public static Supplier<Boolean> getFieldCentric = () -> true;

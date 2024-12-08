@@ -7,6 +7,8 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ClimberConstants;
+import frc.robot.constants.Constants;
+import frc.robot.constants.ClimberConstants.ClimberType;
 import frc.robot.util.NTDoubleSection;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -15,10 +17,26 @@ public class ClimberSubsystem extends SubsystemBase {
 
     NTDoubleSection doubles;
 
-    public ClimberSubsystem(String name, int motorID) {
-        sparkMax = new CANSparkMax(motorID, MotorType.kBrushless);
+    public ClimberSubsystem(ClimberType type) {
+        switch (type) {
+            case RIGHT:
+                sparkMax = new CANSparkMax(Constants.CLIMBER_MOTOR_RIGHT_ID, MotorType.kBrushless);
+                doubles = new NTDoubleSection("right climber", "output", "position");
+                break;
+
+            case LEFT:
+                sparkMax = new CANSparkMax(Constants.CLIMBER_MOTOR_LEFT_ID, MotorType.kBrushless);
+                doubles = new NTDoubleSection("left climber", "output", "position");
+                break;
+
+            default:
+                sparkMax = new CANSparkMax(700, MotorType.kBrushless);
+                doubles = new NTDoubleSection("BIG ERROR!!!", "output", "position");
+                break;
+        }
+
+
         encoder = sparkMax.getEncoder();
-        doubles = new NTDoubleSection(name, "output", "position");
     }
 
     private void up() {

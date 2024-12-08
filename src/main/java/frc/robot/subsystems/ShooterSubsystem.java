@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.constants.ShooterConstants;
+import frc.robot.constants.ShooterConstants.ShooterType;
 
 public class ShooterSubsystem extends SubsystemBase {
     private PIDController pid;
@@ -19,7 +20,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final TalonFX talon;
 
-    public ShooterSubsystem(ShooterConstants.ShooterType type) {
+    public ShooterSubsystem(ShooterType type) {
         switch (type) {
             case TOP:
                 name = "top";
