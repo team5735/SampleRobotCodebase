@@ -23,4 +23,9 @@ public class ShooterConstants {
 
     public static final double BOTTOM_KS = 0;
     public static final double BOTTOM_KV = 0.00194;
+
+    public enum ShooterType{
+        TOP,
+        BOTTOM
+    }
 }

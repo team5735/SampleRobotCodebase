@@ -1,15 +1,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.shooter.ShooterBottomSubsystem;
-import frc.robot.subsystems.shooter.ShooterTopSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterSpinUpCommand extends Command {
-    ShooterTopSubsystem subsystemTop;
-    ShooterBottomSubsystem subsystemBottom;
+    ShooterSubsystem subsystemTop;
+    ShooterSubsystem subsystemBottom;
     double setpoint_top, setpoint_bottom;
 
-    public ShooterSpinUpCommand(ShooterTopSubsystem topShooter, ShooterBottomSubsystem bottomShooter,
+    public ShooterSpinUpCommand(ShooterSubsystem topShooter, ShooterSubsystem bottomShooter,
             double topShooterSpeed_rpm, double bottomShooterSpeed_rpm) {
         subsystemTop = topShooter;
         subsystemBottom = bottomShooter;

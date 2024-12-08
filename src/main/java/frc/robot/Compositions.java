@@ -11,8 +11,7 @@ import frc.robot.constants.ShooterConstants;
 import frc.robot.subsystems.AngleSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.shooter.ShooterBottomSubsystem;
-import frc.robot.subsystems.shooter.ShooterTopSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * A collection of composition commands which don't have a clear subsystem they
@@ -30,8 +29,8 @@ public class Compositions {
      * shooter is at full speed.
      */
     static Command feedAndShootAlsoIntake(FeederSubsystem feeder, IntakeSubsystem intake,
-            ShooterTopSubsystem shooterTop,
-            ShooterBottomSubsystem shooterBottom, double topRPM, double bottomRPM) {
+            ShooterSubsystem shooterTop,
+            ShooterSubsystem shooterBottom, double topRPM, double bottomRPM) {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new ShooterSpinUpCommand(shooterTop, shooterBottom, topRPM, bottomRPM),
@@ -53,8 +52,8 @@ public class Compositions {
                 : angleSetCommand;
     }
 
-    public static Command shootNAngleFromStageBack(AngleSubsystem angle, ShooterTopSubsystem top,
-            ShooterBottomSubsystem bottom, FeederSubsystem feeder, IntakeSubsystem intake) {
+    public static Command shootNAngleFromStageBack(AngleSubsystem angle, ShooterSubsystem top,
+            ShooterSubsystem bottom, FeederSubsystem feeder, IntakeSubsystem intake) {
         return new SequentialCommandGroup(
                 angle.angleToStageBack(),
                 feedAndShootAlsoIntake(
@@ -62,8 +61,8 @@ public class Compositions {
                         ShooterConstants.BOTTOM_STAGE_BACK_RPM));
     }
 
-    public static Command shootNAngleFromStageFront(AngleSubsystem angle, ShooterTopSubsystem top,
-            ShooterBottomSubsystem bottom, FeederSubsystem feeder, IntakeSubsystem intake) {
+    public static Command shootNAngleFromStageFront(AngleSubsystem angle, ShooterSubsystem top,
+            ShooterSubsystem bottom, FeederSubsystem feeder, IntakeSubsystem intake) {
         return new SequentialCommandGroup(
                 angle.angleToStageFront(),
                 feedAndShootAlsoIntake(
@@ -89,7 +88,7 @@ public class Compositions {
      *
      * @return The Command that stops both when interrupted
      */
-    public static Command shootersHoldNStop(ShooterTopSubsystem shooterTop, ShooterBottomSubsystem shooterBottom) {
+    public static Command shootersHoldNStop(ShooterSubsystem shooterTop, ShooterSubsystem shooterBottom) {
         return Commands.startEnd(() -> {
         }, () -> {
             shooterTop.stop();

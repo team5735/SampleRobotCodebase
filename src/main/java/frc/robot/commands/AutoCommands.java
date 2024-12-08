@@ -15,8 +15,7 @@ import frc.robot.Compositions;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.shooter.ShooterBottomSubsystem;
-import frc.robot.subsystems.shooter.ShooterTopSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 // WAIT!!! BEFORE YOU DO ANYTHING:
 // Any command registered in auto for a subsystem that uses a default command should NEVER
@@ -24,7 +23,7 @@ import frc.robot.subsystems.shooter.ShooterTopSubsystem;
 // you should use Commands.runOnce()) because the default command won't run in auto otherwise!
 public class AutoCommands {
     public static void registerCommands(final IntakeSubsystem intake, final FeederSubsystem feeder,
-            final ShooterTopSubsystem shooterTop, final ShooterBottomSubsystem shooterBottom) {
+            final ShooterSubsystem shooterTop, final ShooterSubsystem shooterBottom) {
         Map<String, Command> commandsToRegister = new HashMap<>();
 
         commandsToRegister.put("getNote", Compositions.feedNIn(feeder, intake));
@@ -44,7 +43,7 @@ public class AutoCommands {
                 feeder.unprimeNoteCommand());
     }
 
-    public static Command shooterStart(ShooterTopSubsystem top, ShooterBottomSubsystem bottom) {
+    public static Command shooterStart(ShooterSubsystem top, ShooterSubsystem bottom) {
         return new ParallelCommandGroup(
                 Commands.runOnce(() -> top.setSetpoint(
                         SmartDashboard.getNumber("shootTopRPM", ShooterConstants.TOP_DEFAULT_RPM))),
@@ -52,11 +51,11 @@ public class AutoCommands {
                         SmartDashboard.getNumber("shootBottomRPM", ShooterConstants.BOTTOM_DEFAULT_RPM))));
     }
 
-    public static Command stopShooter(ShooterTopSubsystem top, ShooterBottomSubsystem bottom) {
+    public static Command stopShooter(ShooterSubsystem top, ShooterSubsystem bottom) {
         return new ParallelCommandGroup(Commands.runOnce(() -> top.stop()), Commands.runOnce(() -> bottom.stop()));
     }
 
-    public static Command spunUpDeadline(ShooterTopSubsystem top, ShooterBottomSubsystem bottom) {
+    public static Command spunUpDeadline(ShooterSubsystem top, ShooterSubsystem bottom) {
         return Commands.waitUntil(() -> top.isSpunUp() && bottom.isSpunUp());
     }
 }

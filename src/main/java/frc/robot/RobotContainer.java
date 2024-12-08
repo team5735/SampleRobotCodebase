@@ -23,6 +23,7 @@ import frc.robot.commands.limelight.LimelightAimCommand;
 import frc.robot.commands.ShooterSpinUpCommand;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.OperatorConstants;
+import frc.robot.constants.ShooterConstants.ShooterType;
 import frc.robot.constants.DrivetrainConstants;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.constants.TunerConstants;
@@ -32,8 +33,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.shooter.ShooterBottomSubsystem;
-import frc.robot.subsystems.shooter.ShooterTopSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -55,8 +55,8 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final AngleSubsystem angleSubsystem = new AngleSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-    private final ShooterTopSubsystem shooterTopSubsystem = new ShooterTopSubsystem();
-    private final ShooterBottomSubsystem shooterBottomSubsystem = new ShooterBottomSubsystem();
+    private final ShooterSubsystem shooterTopSubsystem = new ShooterSubsystem(ShooterType.TOP);
+    private final ShooterSubsystem shooterBottomSubsystem = new ShooterSubsystem(ShooterType.BOTTOM);
     private final ClimberSubsystem climberLeftSubsystem = new ClimberSubsystem("left climber",
             Constants.CLIMBER_MOTOR_LEFT_ID);
     private final ClimberSubsystem climberRightSubsystem = new ClimberSubsystem("right climber",

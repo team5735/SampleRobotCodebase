@@ -34,8 +34,8 @@ public final class Constants {
 
     public static final int INTAKE_MOTOR_ID = 60; // SPARKMAX
 
-    public static final int MOTOR_TOP_ID = 57; // TALON
-    public static final int MOTOR_BOTTOM_ID = 58; // TALON
+    public static final int SHOOTER_MOTOR_TOP_ID = 57; // TALON
+    public static final int SHOOTER_MOTOR_BOTTOM_ID = 58; // TALON
 
     public static final int PDH_ID = 59;
 
